@@ -1,6 +1,6 @@
 from collections import UserDict
 from datetime import datetime
-from birthdays import get_birthdays_per_week
+from src.birthdays import get_birthdays_per_week
 import re
 
 class Field:

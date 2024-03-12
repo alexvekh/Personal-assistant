@@ -1,4 +1,4 @@
-from classes import Record
+from src.classes import Record
 
 # Decorator
 def input_error(func):
@@ -15,7 +15,6 @@ def input_error(func):
             return f"Error: {e}"
         except TypeError as e:
             return f"Error: {e}"
-    
     return inner
 
 @input_error
