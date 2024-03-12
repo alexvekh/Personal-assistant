@@ -1,6 +1,7 @@
 from collections import UserDict
 from datetime import datetime
 from src.birthdays import get_birthdays_per_week
+from src.validate import date_validate
 import re
 
 class Field:
@@ -26,21 +27,14 @@ class Phone(Field):
 
 class Birthday(Field):
     def __init__(self, value: str):
-        pattern = r"\d{2}\.\d{2}\.\d{4}"
-        if re.match(pattern, value):
-            dd, mm, yyyy = value.split('.')
-            if int(dd) in range(31) and int(mm) in range(12):
-                if int(yyyy) in range(1900, 2024):
-                    try:
-                        self.value = datetime.strptime(value, '%d.%m.%Y').date()
-                    except ValueError as e:
-                        raise ValueError('Invalid date value: ' + str(e))
-                else:
-                    raise ValueError('Looks like entered year is out of range. Expected in range 1900-2024')
-            else:
-                raise ValueError('Looks like entered day or month is out of range.')
+        if date_validate(value):
+            try:
+                self.value = datetime.strptime(value, '%d.%m.%Y').date()
+            except ValueError as e:
+                raise ValueError('Invalid date value: ' + str(e))
         else:
-            raise ValueError('Invalid date format. Please, use DD.MM.YYYY format')
+            raise ValueError('We couldn\'t validate entered date. Please, try again')
+
         
 class Record:
     def __init__(self, name):
