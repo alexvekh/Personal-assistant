@@ -1,6 +1,5 @@
-
-from classes import AddressBook
-from services import *
+from src.classes import AddressBook
+from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands
 
 def main():
     book = AddressBook()
