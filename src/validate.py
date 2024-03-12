@@ -1,7 +1,7 @@
 import re
 
 # Validete string format 31.12.2024
-def date_validate(string):
+def date_is_valid(string):
     pattern = r"\d{2}\.\d{2}\.\d{4}"
     if re.match(pattern, string):
         dd, mm, yyyy = string.split('.')
@@ -14,3 +14,7 @@ def date_validate(string):
         return True
     else:
         raise ValueError('Invalid date format. Please, use DD.MM.YYYY format')
+    
+
+def email_is_valid(string):
+    pass
