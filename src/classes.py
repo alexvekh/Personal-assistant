@@ -24,6 +24,19 @@ class Phone(Field):
             self.value = value
         else:
             raise ValueError('Phone should be 10 digits format')
+        
+class Email(Field):
+    def __init__(self, value):
+        if self.validate_email(value):
+            self.value = value
+        else:
+            raise ValueError('Invalid email format')
+
+    @staticmethod
+    def validate_email(value):
+        pattern = r'^[\w\.-]+@[\w\.-]{2,}\.\w{2,}$'
+        return re.match(pattern, value) is not None
+    
 
 class Birthday(Field):
     def __init__(self, value: str):
