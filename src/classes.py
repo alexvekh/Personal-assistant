@@ -1,6 +1,6 @@
 from collections import UserDict
 from datetime import datetime
-from src.birthdays import get_birthdays_per_week
+from src.birthdays import get_birthdays_by_days, get_birthdays_per_week
 from src.validate import date_is_valid
 import re
 
@@ -109,3 +109,10 @@ class AddressBook(UserDict):
             if record.birthday != None:
                 users.append({'name': name, 'birthday': record.birthday.value})
         return get_birthdays_per_week(users)
+
+    def get_birthdays_by_days(self, days):
+        users = []
+        for name, record in self.data.items():
+            if record.birthday != None:
+                users.append({'name': name, 'phones': record.phones,'birthday': record.birthday.value})
+        return get_birthdays_by_days(users, days)
