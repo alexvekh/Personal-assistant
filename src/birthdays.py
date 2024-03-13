@@ -25,26 +25,20 @@ def get_birthdays_per_week(users):    # get users with next 7 days birthdays
             birthdays_per_week[day_of_week].append(name)    # saving result
     
     # Sort and print
-    print("You have a user birthdays this week:")
-    sorted_days = sorted(birthdays_per_week.keys())  
-    for day in sorted_days:        
-        # print(day + ':  ' + ', '.join(birthdays_per_week[day]))  # simple
-        print("  {:<8}  {} ".format(day+":", ', '.join(birthdays_per_week[day]))) # formated
-        # day from sorted_days[] but names from birthdays_per_week{}
+    if len(birthdays_per_week) == 0:
+        print("No users with birthday this week")
 
-########## For test:
-# users = [
-#     {"name": "Bill Gates", "birthday": datetime(1955, 1, 28)},
-#     {"name": "John Smith", "birthday": datetime(1958, 2, 28)},
-#     {"name": "Romeo Boss", "birthday": datetime(1978, 12, 28)},
-#     {"name": "My Son", "birthday": datetime(2010, 2, 25)},
-#     {"name": "My Son2", "birthday": datetime(2010, 2, 25)},
-#     {"name": "Cringe Z", "birthday": datetime(1999, 2, 27)},
-# ]
-# get_birthdays_per_week(users)
+    else: 
+        print("This week bithdays have users:")
+        sorted_days = sorted(birthdays_per_week.keys())  
+        for day in sorted_days:        
+            # print(day + ':  ' + ', '.join(birthdays_per_week[day]))  # simple
+            print("  {:<8}  {} ".format(day+":", ', '.join(birthdays_per_week[day]))) # formated
+            # day from sorted_days[] but names from birthdays_per_week{}
+
 
 # Function to get birthdays by days
-def get_birthdays_by_days(users, days):
+def get_birthdays_by_days(users, string_days):
     """
     This function takes a list of users and a number of days and returns a list of users with birthdays in that number of days.
 
@@ -55,8 +49,14 @@ def get_birthdays_by_days(users, days):
     Returns:
         list: A list of users with birthdays in that number of days.
     """
+    try:
+        days = int(string_days)
+    except ValueError:
+        print("Error: Invalid day format. Please enter a number.")
+    print("days", days)
 
     birthdays = []
+
     today = datetime.today().date()
 
     # Iterate through users
@@ -72,10 +72,25 @@ def get_birthdays_by_days(users, days):
         delta_days = (birthday_this_year - today).days
 
         # Add user to birthdays list if delta days matches input days
-        if delta_days == days:
+        
+        if delta_days <= days:
             birthdays.append(user)
+    
+    #sorted_birthdays = sorted(birthdays, key=lambda item: item['birthday'])
+    print(f"Birthdays in next {days} days:")
+    for el in birthdays:
+        day = el['birthday'].day
+        month = el['birthday'].month
+        year = el['birthday'].year
+        years = today.year - year
+        name = el['name']
 
-    return birthdays
+        phones = []
+        for ph in el['phones']:
+            phone = ph.value
+            phones.append(phone)
+
+        print(f"{day}.{month} {name} will get {years}. Phones: {','.join(phones)}")
 
 # Function to get birthdays by month
 def get_birthdays_by_month(users, month):

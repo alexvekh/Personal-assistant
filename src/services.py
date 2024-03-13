@@ -96,19 +96,24 @@ def show_birthday(args, book):
     else:
         return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
 
-def birthdays(book):
-    book.get_birthdays_per_week()
+def birthdays(args, book):
+    if args:
+        days = args[0]
+        book.get_birthdays_by_days(days)
+    else:
+        book.get_birthdays_per_week()
     
 def show_commands():
     commands = {
         "help": "for help",
         "hello": "just fo say 'Hi!'",
-        "add name phone": "for add new contact",
-        "change name phone": "for change exist contact",
-        "phone name": "for get phone number",
-        "add-birthday name": "for add birthday",
-        "show_birthday name": "for get birthday",
+        "add [name] [phone]": "for add new contact",
+        "change [name] [phon]e": "for change exist contact",
+        "phone [name]": "for get phone number",
+        "add-birthday [name]": "for add birthday",
+        "show-birthday [name]": "for get birthday",
         "birthdays": "for get birtdays next week ",
+        "birthdays [days]": "for get birtdays for next amount of days",
         "all": "for get all contact list",
         "exit": "for exit",
     }

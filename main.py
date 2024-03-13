@@ -3,16 +3,14 @@ from src.services import parse_input, add_contact, change_contact, show_phone, s
 from src.disk import save_to_json, load_from_json
 
 def main():
-    # book = AddressBook()
-    # print(book)
+    print("Welcome to the assistant bot!")
     try:
         book = load_from_json()
-        print("main load", book)
+        print("Data loaded from file.")
     except:
         book = AddressBook()
-        print("main new", book)
 
-    print("Welcome to the assistant bot!")
+
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
@@ -39,7 +37,7 @@ def main():
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
-            birthdays(book)
+            birthdays(args, book)
         else:
             print("Invalid command. Enter \"help\" for help")
 
