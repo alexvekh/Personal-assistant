@@ -1,10 +1,10 @@
 
-from src.classes import Record, Phone, Birthday, Email
-from datetime import datetime
-from collections import defaultdict
-
-from re import fullmatch
-
+from src.classes import Record, Birthday, AddressBook, Email
+from src.check import *
+# from datetime import datetime
+from src.classes import Record
+#from collections import defaultdict
+# from re import fullmatch
 
 def input_error(func):
     """
@@ -180,22 +180,6 @@ def change_contact_field(args, book):
             record.note = new_value
         return f"Contact {name} updated."
     else:
-# <<<<<<< find_edit_contact#                        ADDED Maricka. I WANT TO CHECK
-#         return f"{name} not found."
-
-# def get_phones(record):
-#     """
-#     Function to retrieve phones from a record.
-
-#     Args:
-#         record: Record object.
-
-#     Returns:
-#         String with phone numbers.
-#     """
-#     res = [phone.value for phone in record.phones]
-#     if res:
-##############################################################=======
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
     
 def get_phones(record):   # Service for get phones from record
@@ -203,7 +187,6 @@ def get_phones(record):   # Service for get phones from record
     for phone in record.phones:
         res.append(phone.value)
     if res[0]:
-#################################################################>>>>>>> main
         return ','.join(res)
     else:
         return "No phone"
@@ -222,39 +205,17 @@ def get_emails(record):
     if res:
         return ','.join(res)
     else:
-# ######################################<<<<<<< find_edit_contact       ADDED Maricka. I WANT TO CHECK
-#         return "No email"
 
-# if __name__ == "__main__":
-#     contacts_book = {}
 
-#     while True:
-#         user_input = input("Enter command: ")
-#         if user_input.lower() == "exit":
-#             print("Exiting...")
-#             break
 
-#         command, *arguments = parse_input(user_input)
+def birthdays(args, book):
+    if args:
+        days = args[0]
+        book.get_birthdays_by_days(days)
+    else:
+        book.get_birthdays_per_week()
 
-#         if command == "add":
-#             result = add_contact(arguments, contacts_book)
-#             print(result)
-#         elif command == "change":
-#             result = change_contact(arguments, contacts_book)
-#             print(result)
-#         elif command == "find":
-#             result = find_contact_by_field(arguments, contacts_book)
-#             print(result)
-#         elif command == "change_field":
-#             result = change_contact_field(arguments, contacts_book)
-#             print(result)
-#         else:
-#             print("Unknown command. Please try again or type 'exit' to quit.")
-# =======##################################################################
-        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
-    
-def birthdays(book):
-    book.get_birthdays_per_week()
+
 
 @input_error
 def add_address(args, book):
@@ -277,6 +238,153 @@ def show_address(args, book):
             return f"Addresses for {name}:\n{address_str}"
         else:
             return f"No addresses found for {name}."
+
+    else:
+        return "Contact does not exist."
+
+def edit_address(args, book):
+    name, street, house_number, city, postal_code, country = args
+    if name in book.data:
+        record = book.data[name]
+        record.edit_address(street, house_number, city, postal_code, country)
+        return "Address edited."
+    else:
+        return "Contact does not exist."
+
+def remove_address(args, book):
+    name, = args
+    if name in book.data:
+        record = book.data[name]
+        record.remove_address()
+        return "Address removed."
+    else:
+        return "Contact does not exist."
+    
+
+
+def new_note(notes):
+    while True:
+        title = input("Type the title here ===>  ")
+        if title:
+            break
+        else:
+            print("Title cannot be empty.")
+            continue
+    text = input("Type the text here ===>  ")
+    while True:
+        tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+        if all(fullmatch(r'\#\w+', tag) for tag in tags):
+            notes.append(Note(title, text, tags))
+            return "Note has been added"
+        else:
+            print("Wrong format.")
+
+def edit_note(notes):
+    if notes:
+        note = find_note(notes)
+        answer = input("Type <y> if you want to change the title or any else key to continue ===>  ")
+        if answer == 'y':
+            note.data["title"] = input("Type the new title here ===>  ")
+        answer = input("Type <y> if you want to change the text or any else key to continue ===>  ")
+        if answer == 'y':
+            note.data["text"] = input("Type the new text here ===>  ")
+        answer = input("Type <y> if you want to change tags or any else key to continue ===>  ")
+        if answer == 'y':
+            while True:
+                tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+                if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                    note.data["tags"] = tags
+                    break
+                else:
+                    print("Wrong format.")
+        return "Note has been edited."
+    return "No notes added."
+
+def delete_note(notes):
+    if notes:
+        note = find_note(notes)
+        del notes[notes.index(note)]
+        return "Note has been deleted."
+    return "No notes added."
+
+def find_note(notes):
+    note_dict = dict(zip(range(1, len(notes) + 1), notes))
+    for number, note in note_dict.items():
+        print(str(number) + ': ' + note.data["title"])
+    while True:
+        answer = input("Type the number of note ===>  ")
+        if answer.isdigit() and 1 <= int(answer) <= len(notes):
+            return notes[int(answer) - 1]
+        else:
+            print(f"Must be the number between 1 and {len(notes)}")
+            continue
+
+def show_notes(notes):
+    if notes:
+        while True:
+            answer = input("What are we looking for? (a for all notes and s for specific) a/s ===>  ")
+            if answer == 'a':
+                notes_to_print = notes
+                return '\n'.join(str(note) for note in notes_to_print)
+            elif answer == 's':
+                while True:
+                    key = input("What element do you want to search by? (title/text/tags) ===>  ")
+                    if key in ('title', 'text'):
+                        element = input(f"Type the {key} you want to look for ===>  ")
+                        notes_to_print = tuple(filter(lambda note: element in note.data[key], notes))
+                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
+                    elif key == 'tags':
+                        while True:
+                            tags = input("Type the tag(s) you want to look for (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+                            if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                                break
+                            else:
+                                print("Wrong format.")
+                                continue
+                        notes_to_print = tuple(filter(lambda note: all(tag in note.data["tags"] for tag in tags), notes))
+                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
+                    else:
+                        print("Wrong format.")
+                        continue
+            else:
+                print("Wrong format.")
+                continue
+    else:
+        return "No notes added."
+    
+
+
+
+
+@input_error
+def find(args, book):
+    print(f"шукати {args}")
+    arg = args[0]
+    if is_looks_date(arg):    # якщо arg схожий на дату
+        print(f"Функція буде шукати date {arg}")
+        for record in book.values():
+            print("record", record)
+    #   record виводить 
+            if record.birthday:
+                print(record.birthday, record.birthday.value, arg, Birthday(arg))
+                print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
+                if Birthday(arg) == record.birthday:
+                    print(True)
+# Треба порівняти birthday з arg і вивести records де це співпадає
+
+
+
+    elif is_looks_phone(arg):
+        print(f"Функція буде шукати phone {arg}")
+        #book.find_in_field("phone", arg)
+    elif is_looks_email(arg):
+        print(f"Функція буде шукати email {arg}")
+        #book.find_in_field("email", arg)
+    
+    # Address not aveilable to check:
+        
+    # name
+
     else:
         return "Contact does not exist."
 
@@ -305,6 +413,22 @@ def show_commands():
     commands = {
         "help": "for help",
         "hello": "just fo say 'Hi!'",
+
+        "add [name] [phone]": "add new contact",
+        "change [name] [phone]": "change person phone number",
+        "phone [name]": "get person phone numbers",
+        "add-birthday [name]": "add person birthday",
+        "show-birthday [name]": "get person birthday",
+        "change-birthday [name]": "change person birthday",
+        "birthdays": "get persons with birtday next week ",
+        "birthdays [days]": "get birtdays list for next custom amount of days",
+        "delete [name]": "delete contact",
+        "delete [name] phones": "delete person phones",
+        "delete [name] birthday": "delete person birthday",
+        "delete [name] email": "delete person email",
+        "delete [name] address": "delete person address",
+        "delete [name] notes": "delete person notes",       
+
         "add name phone": "for add new contact",
         "change name phone": "for change exist contact",
         "phone name": "for get phone number",
@@ -318,6 +442,7 @@ def show_commands():
         "all": "for get all contact list",
         "exit": "for exit",
     }
+
     res = []
     for command, desctiption in commands.items():
         res.append("{:<19} {} ".format(command, desctiption))

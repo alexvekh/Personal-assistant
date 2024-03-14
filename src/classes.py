@@ -18,6 +18,8 @@ class Name(Field):
         else:
             raise NameError('Name should starts with letter')
 
+
+
 class Phone(Field):
     def __init__(self, value):
         if len(value) == 10 and value.isdigit():
@@ -25,6 +27,18 @@ class Phone(Field):
         else:
             raise ValueError('Phone should be 10 digits format')
 
+class Email(Field):
+    def __init__(self, value):
+        if self.validate_email(value):
+            self.value = value
+        else:
+            raise ValueError('Invalid email format')
+
+    @staticmethod
+    def validate_email(value):
+        pattern = r'^[\w\.-]+@[\w\.-]{2,}\.\w{2,}$'
+        return re.match(pattern, value) is not None
+    
 class Birthday(Field):
     def __init__(self, value: str):
         if date_is_valid(value):
@@ -51,7 +65,19 @@ class Address(Field):
             address_parts.append(self.country)
         return ", ".join(address_parts)
 
+
+class Note(UserDict):
+    def __init__(self, title, text, tags):
+        super().__init__()
+        self.data["title"] = title
+        self.data["text"] = text
+        self.data["tags"] = tags
+
         
+    def __str__(self):
+        return f"{'=' * 50}\nTitle: {self.data['title']}\nText: {self.data['text']}\nTags: {' '.join(self.data['tags'])}"
+
+
 class Record:
     def __init__(self, name):
         self.name = Name(name)
@@ -113,6 +139,32 @@ class Record:
         
     def remove_address(self):
         self.addresses = []
+
+    def add_address(self, street, house_number, city, postal_code=None, country=None):
+        self.addresses.append(Address(street, house_number, city, postal_code, country))
+
+    def edit_address(self, street, house_number, city, postal_code=None, country=None):
+        if self.addresses:
+            address = self.addresses[0]
+            if street:
+                address.street = street
+            if house_number:
+                address.house_number = house_number
+            if city:
+                address.city = city
+            if postal_code:
+                address.postal_code = postal_code
+            if country:
+                address.country = country
+            return "Address edited."
+        else:
+            return "No address to edit."
+
+
+    def remove_address(self):
+        self.addresses = []
+
+
 
 class AddressBook(UserDict):
     def __init__(self, name="contacts"):
