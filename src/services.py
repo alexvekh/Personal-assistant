@@ -1,5 +1,5 @@
 
-from src.classes import Record, Phone, Birthday, Email
+from src.classes import Record, Phone, Birthday
 from datetime import datetime
 from collections import defaultdict
 

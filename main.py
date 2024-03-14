@@ -1,6 +1,6 @@
 from src.classes import AddressBook
 
-from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands, add_address, edit_address, show_address, remove_address, new_note, edit_note, delete_note, show_notes
+from src.services import parse_input, add_contact, change_contact, birthdays, show_commands, add_address, edit_address, show_address, remove_address, new_note, edit_note, delete_note, show_notes
 
 from src.disk import save_to_json, load_from_json
 
