@@ -1,6 +1,6 @@
 from collections import UserDict
 from datetime import datetime
-from src.birthdays import get_birthdays_by_days, get_birthdays_per_week
+from src.birthdays import get_birthdays_per_week
 from src.validate import date_is_valid
 import re
 
@@ -35,12 +35,29 @@ class Birthday(Field):
         else:
             raise ValueError('We couldn\'t validate entered date. Please, try again')
 
+class Address(Field):
+    def __init__(self, street, house_number, city, postal_code=None, country=None):
+        self.street = street
+        self.house_number = house_number
+        self.city = city
+        self.postal_code = postal_code
+        self.country = country
+
+    def __str__(self):
+        address_parts = [self.street, self.house_number, self.city]
+        if self.postal_code:
+            address_parts.append(self.postal_code)
+        if self.country:
+            address_parts.append(self.country)
+        return ", ".join(address_parts)
+
         
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
         self.birthday = None
+        self.addresses = []
     
     def add_phone(self, value):
         self.phones.append(Phone(value))
@@ -72,6 +89,30 @@ class Record:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
         else:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
+        
+    def add_address(self, street, house_number, city, postal_code=None, country=None):
+        self.addresses.append(Address(street, house_number, city, postal_code, country))
+    
+    def edit_address(self, street, house_number, city, postal_code=None, country=None):
+        if self.addresses:
+            address = self.addresses[0]
+            if street:
+                address.street = street
+            if house_number:
+                address.house_number = house_number
+            if city:
+                address.city = city
+            if postal_code:
+                address.postal_code = postal_code
+            if country:
+                address.country = country
+            return "Address edited."
+        else:
+            return "No address to edit."
+        
+        
+    def remove_address(self):
+        self.addresses = []
 
 class AddressBook(UserDict):
     def __init__(self, name="contacts"):
@@ -109,10 +150,13 @@ class AddressBook(UserDict):
             if record.birthday != None:
                 users.append({'name': name, 'birthday': record.birthday.value})
         return get_birthdays_per_week(users)
-
-    def get_birthdays_by_days(self, days):
-        users = []
-        for name, record in self.data.items():
-            if record.birthday != None:
-                users.append({'name': name, 'phones': record.phones,'birthday': record.birthday.value})
-        return get_birthdays_by_days(users, days)
+    
+class Note(UserDict):
+    def __init__(self, title, text, tags):
+        super().__init__()
+        self.data["title"] = title
+        self.data["text"] = text
+        self.data["tags"] = tags
+        
+    def __str__(self):
+        return f"{'=' * 50}\nTitle: {self.data['title']}\nText: {self.data['text']}\nTags: {' '.join(self.data['tags'])}"
