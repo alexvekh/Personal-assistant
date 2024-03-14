@@ -130,7 +130,6 @@ def find(args, book):
                 print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
                 if Birthday(arg) == record.birthday:
                     print(True)
-
 # Треба порівняти birthday з arg і вивести records де це співпадає
 
 
