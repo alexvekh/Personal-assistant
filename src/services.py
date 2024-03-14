@@ -1,6 +1,7 @@
 from src.classes import Record, Birthday, AddressBook
 from src.check import *
 from datetime import datetime
+from src.classes import Record
 
 # Decorator
 def input_error(func):
@@ -117,6 +118,55 @@ def birthdays(args, book):
         book.get_birthdays_per_week()
 
 @input_error
+def add_address(args, book):
+    name, street, house_number, city, postal_code, country = args
+    if name in book.data:
+        record = book.data[name]
+        record.add_address(street, house_number, city, postal_code, country)
+        return "Address added."
+    else:
+        return "Contact does not exist."
+
+@input_error
+def show_address(args, book):
+    name = args[0]
+    if name in book.data:
+        record = book.data[name]
+        addresses = record.addresses
+        if addresses:
+            address_str = "\n".join([f"{address}" for address in addresses])
+            return f"Addresses for {name}:\n{address_str}"
+        else:
+            return f"No addresses found for {name}."
+    else:
+        return "Contact does not exist."
+
+def edit_address(args, book):
+    name, street, house_number, city, postal_code, country = args
+    if name in book.data:
+        record = book.data[name]
+        record.edit_address(street, house_number, city, postal_code, country)
+        return "Address edited."
+    else:
+        return "Contact does not exist."
+
+def remove_address(args, book):
+    name, = args
+    if name in book.data:
+        record = book.data[name]
+        record.remove_address()
+        return "Address removed."
+    else:
+        return "Contact does not exist."
+    
+
+
+
+
+
+
+
+@input_error
 def find(args, book):
     print(f"шукати {args}")
     arg = args[0]
@@ -200,9 +250,22 @@ def show_commands():
         "delete [name] email": "delete person email",
         "delete [name] address": "delete person address",
         "delete [name] notes": "delete person notes",       
+        "add name phone": "for add new contact",
+        "change name phone": "for change exist contact",
+        "phone name": "for get phone number",
+        "add-birthday name": "for add birthday",
+        "show_birthday name": "for get birthday",
+        "add-address name street house_number city postal_code country": "for add an address to a contact",
+        "remove-address name index": "for remove an address from a contact by its index",
+        "edit-address name index [street] [house_number] [city] [postal_code] [country]": "for edit an address of a contact",
+        "remove-address name index": "for remove an address from a contact by its index",
+        "birthdays": "for get birtdays next week ",
+        "all": "for get all contact list",
+        "exit": "for exit",
         "all": "get all contact list",
         "exit": "exit",
     }
+
     res = []
     for command, desctiption in commands.items():
         res.append("    {:<23}  -->  {} ".format(command, desctiption))

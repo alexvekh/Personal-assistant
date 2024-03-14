@@ -1,5 +1,4 @@
 from src.classes import AddressBook
-#from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands
 from src.services import *
 from src.disk import save_to_json, load_from_json
 
@@ -47,6 +46,17 @@ def main():
             print("Буде працювати функція add_address(args, book)")
         elif command == "show-address":
             print("Буде працювати функція show_address(args, book)")
+        # Alesia
+        elif command == "add-address":
+            print(add_address(args, book))
+        elif command == "edit-address":
+            print(edit_address(args, book))
+        elif command == "show-address":
+            print(show_address(args,book))
+        elif command == "remove-address":
+            print(remove_address(args, book))
+
+
         elif command == "find":
             print(find(args, book))
         elif command == "delete":
