@@ -65,7 +65,15 @@ class Address(Field):
             address_parts.append(self.country)
         return ", ".join(address_parts)
 
-
+class Note(UserDict):
+    def __init__(self, title, text, tags):
+        super().__init__()
+        self.data["title"] = title
+        self.data["text"] = text
+        self.data["tags"] = tags
+        
+    def __str__(self):
+        return f"{'=' * 50}\nTitle: {self.data['title']}\nText: {self.data['text']}\nTags: {' '.join(self.data['tags'])}"
 
 
 class Record:
