@@ -1,12 +1,12 @@
 from src.classes import AddressBook
-from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands
+#from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands
+from src.services import *
 from src.disk import save_to_json, load_from_json
 
 def main():
     print("Welcome to the assistant bot!")
     try:
         book = load_from_json()
-        print("Data loaded from file.")
     except:
         book = AddressBook()
 
@@ -17,6 +17,7 @@ def main():
 
         if command in ["close", "exit", "good bye"]:
             save_to_json(book)
+
             print("Good bye!")
             break
 
@@ -36,6 +37,23 @@ def main():
             print(add_birthday(args, book))
         elif command == "show-birthday":
             print(show_birthday(args, book))
+        elif command == "change-birthday":
+            print(change_birthday(args, book))
+        elif command == "add-email":
+            print("Буде працювати функція add_email(args, book)")
+        elif command == "show-email":
+            print("Буде працювати функція show_email(args, book)")
+        elif command == "add-address":
+            print("Буде працювати функція add_address(args, book)")
+        elif command == "show-address":
+            print("Буде працювати функція show_address(args, book)")
+        elif command == "find":
+            print("Буде працювати функція find(args, book)")
+        elif command == "delete":
+            print(delete(args, book))
+
+
+
         elif command == "birthdays":
             birthdays(args, book)
         else:

@@ -67,6 +67,26 @@ class Record:
         self.birthday = Birthday(value)
         return "birthday added"
     
+    def remove_phones(self):
+        self.phones = []
+        return f"{self.name.value}'s phones deleted"
+
+    def remove_birthday(self):
+        self.birthday = None
+        return f"{self.name.value}'s birthday deleted"
+    
+    def remove_email(self):
+        self.email = None
+        return f"{self.name.value}'s email deleted"
+
+    def remove_address(self):
+        self.address = None
+        return f"{self.name.value}'s address deleted"
+
+    def remove_notes(self):
+        self.notes = None
+        return f"{self.name.value}'s notes deleted"
+
     def __str__(self):
         if self.birthday == None:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
@@ -74,9 +94,9 @@ class Record:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
 
 class AddressBook(UserDict):
-    def __init__(self, name="contacts"):
-        super().__init__()
-        self.name = name
+    # def __init__(self, name="contacts"):
+    #     super().__init__()
+    #     self.name = name
 
     def __dict__(self):
         return {'name': self.name, 'records': dict(self.data)}  # Restructure for JSON
@@ -86,22 +106,35 @@ class AddressBook(UserDict):
         #print(f'Added new record: "{record}"')
         
     def find(self, value):
-        for name, record in self.data.items():
-            if name == value:
-                return record
-            else:
-                raise IndexError(f"Record for {value} wasn't found")
+        if value in self:
+            return self[value]      # record
+        else:
+            raise IndexError(f"Record for {value} wasn't found")
+        
+        #### Code for delete
+        # for name, record in self.items():
+        #     if name == value:
+        #         return record
+        #     else:
+        #         raise IndexError(f"Record for {value} wasn't found")
 
     def delete(self, name):
         try:
-            key_for_delete = None
-            for key in self.data.keys():
-                if key == name:
-                    key_for_delete = key
-            self.data.pop(key_for_delete)
-            print(f'{name}\'s contact was deleted')
+            self.data.pop(name)
+            return f'{name}\'s contact was deleted'
         except(KeyError):
-            print(f'{name}\'s contact wasn\'t found')
+            return f'{name}\'s contact wasn\'t found'
+        
+        ##### Code for delete
+        # try:
+        #     key_for_delete = None
+        #     for key in self.data.keys():
+        #         if key == name:
+        #             key_for_delete = key
+        #     self.data.pop(key_for_delete)
+        #     print(f'{name}\'s contact was deleted')
+        # except(KeyError):
+        #     print(f'{name}\'s contact wasn\'t found')
     
     def get_birthdays_per_week(self):
         users = []

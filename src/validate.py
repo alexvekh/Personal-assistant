@@ -17,4 +17,9 @@ def date_is_valid(string):
     
 
 def email_is_valid(string):
-    pass
+    pattern = r"^([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,})$"
+    if re.match(pattern, string):
+        return True
+    else: 
+        raise ValueError('Invalid email')
+    
