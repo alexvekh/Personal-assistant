@@ -1,9 +1,9 @@
-from src.classes import Record, Birthday, AddressBook, Email
+from src.classes import Record, Birthday, AddressBook, Email, Phone, Note
 from src.check import *
-# from datetime import datetime
+from datetime import datetime
 from src.classes import Record
-#from collections import defaultdict
-# from re import fullmatch
+from collections import defaultdict
+from re import fullmatch
 
 def input_error(func):
     """
