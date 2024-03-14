@@ -48,12 +48,9 @@ def main():
         elif command == "show-address":
             print("Буде працювати функція show_address(args, book)")
         elif command == "find":
-            print("Буде працювати функція find(args, book)")
+            print(find(args, book))
         elif command == "delete":
             print(delete(args, book))
-
-
-
         elif command == "birthdays":
             birthdays(args, book)
         else:
