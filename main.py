@@ -38,14 +38,13 @@ def main():
             print(show_birthday(args, book))
         elif command == "change-birthday":
             print(change_birthday(args, book))
+
         elif command == "add-email":
             print("Буде працювати функція add_email(args, book)")
         elif command == "show-email":
             print("Буде працювати функція show_email(args, book)")
-        elif command == "add-address":
-            print("Буде працювати функція add_address(args, book)")
-        elif command == "show-address":
-            print("Буде працювати функція show_address(args, book)")
+
+
         # Alesia
         elif command == "add-address":
             print(add_address(args, book))
@@ -56,6 +55,15 @@ def main():
         elif command == "remove-address":
             print(remove_address(args, book))
 
+        elif command == "add-note":
+            print(new_note(notes))
+        elif command == "edit-note":
+            print(edit_note(notes))
+        elif command == "delete-note":
+            print(delete_note(notes))
+        elif command == "show-notes":
+            print(show_notes(notes))
+            print('=' * 50)
 
         elif command == "find":
             print(find(args, book))
