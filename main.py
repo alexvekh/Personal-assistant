@@ -1,5 +1,7 @@
 from src.classes import AddressBook
-from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands, new_note, edit_note, delete_note, show_notes
+
+from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands, add_address, edit_address, show_address, remove_address, new_note, edit_note, delete_note, show_notes
+
 from src.disk import save_to_json, load_from_json
 
 def main():
@@ -41,6 +43,14 @@ def main():
             print(show_birthday(args, book))
         elif command == "birthdays":
             birthdays(book)
+        elif command == "add-address":
+            print(add_address(args, book))
+        elif command == "edit-address":
+            print(edit_address(args, book))
+        elif command == "show-address":
+            print(show_address(args,book))
+        elif command == "remove-address":
+            print(remove_address(args, book))
         elif command == "add-note":
             print(new_note(notes))
         elif command == "edit-note":
@@ -50,6 +60,7 @@ def main():
         elif command == "show-notes":
             print(show_notes(notes))
             print('=' * 50)
+
         else:
             print('Invalid command. Enter "help" for help')
 

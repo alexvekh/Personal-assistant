@@ -20,9 +20,11 @@ def convert_to_json(book):
             )
     return records
 
+
 def save_to_json(book):    
     with open(file, "w", encoding="utf-8") as fh:
         json.dump(convert_to_json(book), fh)
+    print("Don't worry, all data saved to file.")
 
 
 
@@ -44,6 +46,6 @@ def load_from_json():
             record.birthday = birthday
 
             book.add_record(record)
-
+    print("Data loaded from file.")
     return book
 

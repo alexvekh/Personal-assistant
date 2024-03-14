@@ -54,7 +54,7 @@ def show_phone(args, book):
             res.append(phone.value)
         return f"{name}: {','.join(res)}"
     else:
-        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+        return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
     
 def get_phones(record):   # Service for get phones from record
     res = []
@@ -96,10 +96,55 @@ def show_birthday(args, book):
             return f"{name}'s birthday isn't recorded"
     else:
         return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
-
+    
 def birthdays(book):
     book.get_birthdays_per_week()
-    
+
+@input_error
+def add_address(args, book):
+    name, street, house_number, city, postal_code, country = args
+    if name in book.data:
+        record = book.data[name]
+        record.add_address(street, house_number, city, postal_code, country)
+        return "Address added."
+    else:
+        return "Contact does not exist."
+
+@input_error
+def show_address(args, book):
+    name = args[0]
+    if name in book.data:
+        record = book.data[name]
+        addresses = record.addresses
+        if addresses:
+            address_str = "\n".join([f"{address}" for address in addresses])
+            return f"Addresses for {name}:\n{address_str}"
+        else:
+            return f"No addresses found for {name}."
+    else:
+        return "Contact does not exist."
+
+@input_error
+def edit_address(args, book):
+    name, street, house_number, city, postal_code, country = args
+    if name in book.data:
+        record = book.data[name]
+        record.edit_address(street, house_number, city, postal_code, country)
+        return "Address edited."
+    else:
+        return "Contact does not exist."
+
+@input_error
+def remove_address(args, book):
+    name, = args
+    if name in book.data:
+        record = book.data[name]
+        record.remove_address()
+        return "Address removed."
+    else:
+        return "Contact does not exist."
+
+   
 def show_commands():
     commands = {
         "help": "for help",
@@ -109,6 +154,10 @@ def show_commands():
         "phone name": "for get phone number",
         "add-birthday name": "for add birthday",
         "show_birthday name": "for get birthday",
+        "add-address name street house_number city postal_code country": "for add an address to a contact",
+        "remove-address name index": "for remove an address from a contact by its index",
+        "edit-address name index [street] [house_number] [city] [postal_code] [country]": "for edit an address of a contact",
+        "remove-address name index": "for remove an address from a contact by its index",
         "birthdays": "for get birtdays next week ",
         "all": "for get all contact list",
         "exit": "for exit",
