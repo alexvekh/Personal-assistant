@@ -1,4 +1,3 @@
-
 from src.classes import Record, Birthday, AddressBook, Email
 from src.check import *
 # from datetime import datetime
@@ -205,6 +204,7 @@ def get_emails(record):
     if res:
         return ','.join(res)
     else:
+        return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
 
 
 
