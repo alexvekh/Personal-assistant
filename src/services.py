@@ -1,4 +1,5 @@
-from src.classes import Record
+from src.classes import Record, Note
+from re import fullmatch
 
 # Decorator
 def input_error(func):
@@ -116,3 +117,93 @@ def show_commands():
     for command, desctiption in commands.items():
         res.append("{:<19} {} ".format(command, desctiption))
     return "\n".join(res)
+
+def new_note(notes):
+    while True:
+        title = input("Type the title here ===>  ")
+        if title:
+            break
+        else:
+            print("Title cannot be empty.")
+            continue
+    text = input("Type the text here ===>  ")
+    while True:
+        tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+        if all(fullmatch(r'\#\w+', tag) for tag in tags):
+            notes.append(Note(title, text, tags))
+            return "Note has been added"
+        else:
+            print("Wrong format.")
+
+def edit_note(notes):
+    if notes:
+        note = find_note(notes)
+        answer = input("Type <y> if you want to change the title or any else key to continue ===>  ")
+        if answer == 'y':
+            note.data["title"] = input("Type the new title here ===>  ")
+        answer = input("Type <y> if you want to change the text or any else key to continue ===>  ")
+        if answer == 'y':
+            note.data["text"] = input("Type the new text here ===>  ")
+        answer = input("Type <y> if you want to change tags or any else key to continue ===>  ")
+        if answer == 'y':
+            while True:
+                tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+                if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                    note.data["tags"] = tags
+                    break
+                else:
+                    print("Wrong format.")
+        return "Note has been edited."
+    return "No notes added."
+
+def delete_note(notes):
+    if notes:
+        note = find_note(notes)
+        del notes[notes.index(note)]
+        return "Note has been deleted."
+    return "No notes added."
+
+def find_note(notes):
+    note_dict = dict(zip(range(1, len(notes) + 1), notes))
+    for number, note in note_dict.items():
+        print(str(number) + ': ' + note.data["title"])
+    while True:
+        answer = input("Type the number of note ===>  ")
+        if answer.isdigit() and 1 <= int(answer) <= len(notes):
+            return notes[int(answer) - 1]
+        else:
+            print(f"Must be the number between 1 and {len(notes)}")
+            continue
+
+def show_notes(notes):
+    if notes:
+        while True:
+            answer = input("What are we looking for? (a for all notes and s for specific) a/s ===>  ")
+            if answer == 'a':
+                notes_to_print = notes
+                return '\n'.join(str(note) for note in notes_to_print)
+            elif answer == 's':
+                while True:
+                    key = input("What element do you want to search by? (title/text/tags) ===>  ")
+                    if key in ('title', 'text'):
+                        element = input(f"Type the {key} you want to look for ===>  ")
+                        notes_to_print = tuple(filter(lambda note: element in note.data[key], notes))
+                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
+                    elif key == 'tags':
+                        while True:
+                            tags = input("Type the tag(s) you want to look for (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
+                            if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                                break
+                            else:
+                                print("Wrong format.")
+                                continue
+                        notes_to_print = tuple(filter(lambda note: all(tag in note.data["tags"] for tag in tags), notes))
+                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
+                    else:
+                        print("Wrong format.")
+                        continue
+            else:
+                print("Wrong format.")
+                continue
+    else:
+        return "No notes added."
