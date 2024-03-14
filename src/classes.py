@@ -118,6 +118,19 @@ class AddressBook(UserDict):
         #     else:
         #         raise IndexError(f"Record for {value} wasn't found")
 
+    # def find_in_field(self, field, value):
+    #     print(field, value)
+    #     field_value = self.data.get(field).value
+    #     print(field_value)
+    #     for record in self.values():
+    #         print("record", record)
+    #         field_value = record.get(field)
+    #         print(field_value)
+    #         if field == field_value:
+    #                 print("FIND RECORD", record)
+    #         else:
+    #             print(f'{field} {value} not found' )
+
     def delete(self, name):
         try:
             self.data.pop(name)

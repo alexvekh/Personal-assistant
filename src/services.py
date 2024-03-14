@@ -1,4 +1,6 @@
-from src.classes import Record
+from src.classes import Record, Birthday, AddressBook
+from src.check import *
+from datetime import datetime
 
 # Decorator
 def input_error(func):
@@ -47,7 +49,7 @@ def show_phone(args, book):
     name, = args
     if name in book:
         record = book[name]
-        # Out         print(record)
+
         res = []
         for phone in record.phones:
             res.append(phone.value)
@@ -114,11 +116,45 @@ def birthdays(args, book):
     else:
         book.get_birthdays_per_week()
 
-# def find(args, book):
-#     print(f"Функця буде щукати {args}")
-#     if len(args) > 1:
-#         print("To much arguments")
-#     arg = args[0]
+@input_error
+def find(args, book):
+    print(f"шукати {args}")
+    arg = args[0]
+    if is_looks_date(arg):    # якщо arg схожий на дату
+        print(f"Функція буде шукати date {arg}")
+        for record in book.values():
+            print("record", record)
+    #   record виводить 
+            if record.birthday:
+                print(record.birthday, record.birthday.value, arg, Birthday(arg))
+                print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
+                if Birthday(arg) == record.birthday:
+                    print(True)
+
+# Треба порівняти birthday з arg і вивести records де це співпадає
+
+
+
+    elif is_looks_phone(arg):
+        print(f"Функція буде шукати phone {arg}")
+        #book.find_in_field("phone", arg)
+    elif is_looks_email(arg):
+        print(f"Функція буде шукати email {arg}")
+        #book.find_in_field("email", arg)
+    
+    # Address not aveilable to check:
+        
+    # name
+    else:
+        try:
+            record = book.find(arg)
+            if record:
+                print(record)
+                print(f"Функція буде шукати name {arg}")
+    # note
+        except:
+            print(f"Функція буде шукати note {arg}")
+
 
 @input_error
 def delete(args, book):
