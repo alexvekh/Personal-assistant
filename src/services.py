@@ -4,7 +4,9 @@ from datetime import datetime
 from src.classes import Record
 from collections import defaultdict
 from re import fullmatch
+
 from src.validate import email_is_valid
+
 
 
 def input_error(func):
@@ -106,6 +108,7 @@ def get_phones(record):  # Service for get phones from record
 
 
 # Find ----------------------------------------------------------------
+
 def find_contacts(book, field, value):
     """
     Function to search for contacts by a given field and value.
@@ -362,7 +365,9 @@ def show_email(args, book):
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
+
     name = args[0]
+
     if name in book:
         record = book[name]
         res = []
@@ -370,6 +375,7 @@ def show_email(args, book):
             res.append(email.value)
         return f"{name}: {','.join(res)}"
     else:
+
         return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 #@input_error
@@ -396,6 +402,7 @@ def change_email(args, book):
     else:
         return "No such contact."
         
+
 
 @input_error
 def add_email(args, book):
@@ -757,4 +764,6 @@ def delete(args, book):
 #     # name
 #     else:
 #         return "Contact does not exist."
+
 ###----------------------------------------------------------------------------
+
