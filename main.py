@@ -6,16 +6,13 @@ from src.services import *
 
 from src.disk import save_to_json, load_from_json
 
+
 def main():
     # book = AddressBook()
     # print(book)
-    notes = []
-    try:
-        book = load_from_json()
-        #print("main load", book)
-    except:
-        book = AddressBook()
-        #print("main new", book)
+    book, notes = load_from_json()
+    # print("main load", book)
+    # print("main new", book)
 
     print("Welcome to the assistant bot!")
     while True:
@@ -23,37 +20,34 @@ def main():
         command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "good bye"]:
-            save_to_json(book)
+            save_to_json(book, notes)
             print("Good bye!")
             break
         elif command == "hello":
             print("How can I help you?")
         elif command == "help":
             print(show_commands())
-# All
+        # All
         elif command == "all":
-            print(show_all(book))#
+            print(show_all(book))  #
         elif command == "delete":
             print(delete(args, book))
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
-# Find  
+        # Find
         elif command == "find-contact":
             print(find_contacts(args, book))
-        
 
-
-
-#Phone
+        # Phone
         elif command == "add":
             print(add_contact(args, book))
         elif command == "phone":
-            print(show_phone(args, book))#
+            print(show_phone(args, book))  #
         elif command == "change":
             print(change_contact(args, book))
 
-#Birthday
+        # Birthday
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
@@ -61,27 +55,28 @@ def main():
         elif command == "change-birthday":
             print(change_birthday(args, book))
         elif command == "delete-birthday":
-            print(delete_birthday(args, book))       
+            print(delete_birthday(args, book))
         elif command == "birthdays":
             birthdays(args, book)
-#Email
+            
+        # Email
         elif command == "add-email":
             print(add_email(args, book))
-        elif command == "email": 
+        elif command == "email":
             print(show_email(args, book))
         elif command == "delete-email":
             print(delete_email(args, book))
 
-#Address
+        # Address
         elif command == "add-address":
             print(add_address(args, book))
         elif command == "edit-address":
             print(edit_address(args, book))
         elif command == "show-address":
-            print(show_address(args,book))
+            print(show_address(args, book))
         elif command == "remove-address":
             print(remove_address(args, book))
-# Note
+        # Note
         elif command == "add-note":
             print(new_note(notes))
         elif command == "edit-note":
@@ -90,13 +85,13 @@ def main():
             print(delete_note(notes))
         elif command == "show-notes":
             print(show_notes(notes))
-            print('=' * 50)
+            print("=" * 50)
 
         else:
             print('Invalid command. Enter "help" for help')
+
 
 if __name__ == "__main__":
     main()
 
 # Comment
-    

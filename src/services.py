@@ -5,6 +5,7 @@ from src.classes import Record
 from collections import defaultdict
 from re import fullmatch
 
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -19,7 +20,9 @@ def input_error(func):
             return f"Error: {e}"
         except TypeError as e:
             return f"Error: {e}"
+
     return inner
+
 
 @input_error
 def parse_input(user_input):
@@ -28,7 +31,7 @@ def parse_input(user_input):
     return cmd, *args
 
 
-#Phone -----------------------------------------------------------------------------
+# Phone -----------------------------------------------------------------------------
 @input_error
 def add_contact(args, book):
     """
@@ -49,8 +52,9 @@ def add_contact(args, book):
     book[name] = record
     return "Contact added."
 
+
 def show_phone(args, book):
-    name, = args
+    (name,) = args
     if name in book:
         record = book[name]
 
@@ -60,6 +64,7 @@ def show_phone(args, book):
         return f"{name}: {','.join(res)}"
     else:
         return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
 
 @input_error
 def change_contact(args, book):
@@ -88,16 +93,18 @@ def change_contact(args, book):
     else:
         return f"Sorry, {name} not found."
 
-def get_phones(record):   # Service for get phones from record
+
+def get_phones(record):  # Service for get phones from record
     res = []
     for phone in record.phones:
         res.append(phone.value)
     if res[0]:
-        return ','.join(res)
+        return ",".join(res)
     else:
         return "No phone"
 
-#Find ----------------------------------------------------------------
+
+# Find ----------------------------------------------------------------
 def find_contacts(args, book):
     field, value = args
     """
@@ -115,13 +122,26 @@ def find_contacts(args, book):
     if field == "name":
         return str(book[value]) if value in book else []
     elif field == "phone":
-        return [record for record in book.values() if value in [phone.value for phone in record.phones]]
+        return [
+            record
+            for record in book.values()
+            if value in [phone.value for phone in record.phones]
+        ]
     elif field == "birthday":
-        return [record for record in book.values() if record.birthday and record.birthday.value.strftime("%d.%m.%Y") == value]
+        return [
+            record
+            for record in book.values()
+            if record.birthday and record.birthday.value.strftime("%d.%m.%Y") == value
+        ]
     elif field == "email":
-        return [record for record in book.values() if value in [email.value for email in record.emails]]
+        return [
+            record
+            for record in book.values()
+            if value in [email.value for email in record.emails]
+        ]
     else:
         return []
+
 
 def show_found_contacts(contacts):
     """
@@ -138,9 +158,12 @@ def show_found_contacts(contacts):
         res.append(f"{record.name}:")
         res.append(f"  Phones: {get_phones(record)}")
         res.append(f"  Emails: {get_emails(record)}")
-        res.append(f"  Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}")
+        res.append(
+            f"  Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}"
+        )
         res.append(f"  Note: {record.note if record.note else 'No note'}")
     return "\n".join(res)
+
 
 @input_error
 def find_contact_by_field(args, book):
@@ -160,6 +183,7 @@ def find_contact_by_field(args, book):
         return show_found_contacts(found_contacts)
     else:
         return f"No contacts found by {field} with value {value}."
+
 
 @input_error
 def change_contact_field(args, book):
@@ -188,15 +212,16 @@ def change_contact_field(args, book):
     else:
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
 
-    
+
 def show_all(book):
     res = []
     res.append("{:^20}".format("CONTACTS"))
-    res.append("{:^20}".format("-"*10))
+    res.append("{:^20}".format("-" * 10))
     for name, record in book.items():
-        res.append("{:<14} {:<14}".format(name+":", get_phones(record)))
-    res.append("{:^20}".format("="*20))
+        res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
+    res.append("{:^20}".format("=" * 20))
     return "\n".join(res)
+
 
 # Birthday ----------------------------------------------------------------
 @input_error
@@ -209,9 +234,10 @@ def add_birthday(args, book):
     else:
         return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
 
+
 @input_error
 def show_birthday(args, book):
-    name, = args
+    (name,) = args
     if name in book:
         record = book[name]
         if record.birthday != None:
@@ -222,6 +248,7 @@ def show_birthday(args, book):
     else:
         return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
 
+
 def change_birthday(args, book):
     name, birthday = args
     if name in book:
@@ -231,8 +258,9 @@ def change_birthday(args, book):
     else:
         return f"Sorry, {name} isn't exist."
 
+
 def delete_birthday(args, book):
-    name, = args
+    (name,) = args
     if name in book:
         record = book[name]
         if record.birthday != None:
@@ -251,6 +279,7 @@ def birthdays(args, book):
     else:
         book.get_birthdays_per_week()
 
+
 # Email  ----------------------------------------------------------------------
 def get_emails(record):
     """
@@ -264,9 +293,10 @@ def get_emails(record):
     """
     res = [email.value for email in record.emails]
     if res:
-        return ','.join(res)
+        return ",".join(res)
     else:
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
+
 
 # "add-email name email": "adding email to existing contact"
 @input_error
@@ -280,7 +310,7 @@ def add_email(args, book):
 
     Returns:
         str: A confirmation message of adding the email.
-    
+
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
@@ -291,6 +321,7 @@ def add_email(args, book):
         return f"{name}'s email added"
     else:
         return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
 
 # "email name": "get email of specific contact"
 @input_error
@@ -304,11 +335,11 @@ def show_email(args, book):
 
     Returns:
         str: A string containing the contact's name and their email(s).
-    
+
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
-    name, = args
+    (name,) = args
     if name in book:
         record = book[name]
         res = []
@@ -318,6 +349,8 @@ def show_email(args, book):
     else:
         return "Sorry, {name} isn't exist. Use 'add' for append this contact."
 
+
+@input_error
 def add_email(args, book):
     """
     Function to add an email to a contact record.
@@ -328,7 +361,7 @@ def add_email(args, book):
 
     Returns:
         str: A confirmation message of adding the email.
-    
+
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
@@ -339,6 +372,7 @@ def add_email(args, book):
         return f"{name}'s email added"
     else:
         return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
 
 # "email name": "get email of specific contact"
 @input_error
@@ -352,11 +386,11 @@ def show_email(args, book):
 
     Returns:
         str: A string containing the contact's name and their email(s).
-    
+
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
-    name, = args
+    (name,) = args
     if name in book:
         record = book[name]
         res = []
@@ -365,6 +399,7 @@ def show_email(args, book):
         return f"{name}: {','.join(res)}"
     else:
         return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
 
 # "change-email name email": "changing email of existing contact"
 @input_error
@@ -378,7 +413,7 @@ def delete_email(args, book):
 
     Returns:
         str: A confirmation message of deleting the email.
-    
+
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
@@ -394,8 +429,6 @@ def delete_email(args, book):
         return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 
-
-
 # Address -----------------------------------------------------------------
 @input_error
 def add_address(args, book):
@@ -406,6 +439,7 @@ def add_address(args, book):
         return "Address added."
     else:
         return "Contact does not exist."
+
 
 @input_error
 def show_address(args, book):
@@ -432,8 +466,9 @@ def edit_address(args, book):
     else:
         return "Contact does not exist."
 
+
 def remove_address(args, book):
-    name, = args
+    (name,) = args
     if name in book.data:
         record = book.data[name]
         record.remove_address()
@@ -442,8 +477,8 @@ def remove_address(args, book):
         return "Contact does not exist."
 
 
-
 # Note --------------------------------------------------------------------
+
 
 def new_note(notes):
     while True:
@@ -455,33 +490,45 @@ def new_note(notes):
             continue
     text = input("Type the text here ===>  ")
     while True:
-        tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
-        if all(fullmatch(r'\#\w+', tag) for tag in tags):
+        tags = input(
+            "Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  "
+        ).split()
+        if all(fullmatch(r"\#\w+", tag) for tag in tags):
             notes.append(Note(title, text, tags))
             return "Note has been added"
         else:
             print("Wrong format.")
 
+
 def edit_note(notes):
     if notes:
         note = find_note(notes)
-        answer = input("Type <y> if you want to change the title or any else key to continue ===>  ")
-        if answer == 'y':
+        answer = input(
+            "Type <y> if you want to change the title or any else key to continue ===>  "
+        )
+        if answer == "y":
             note.data["title"] = input("Type the new title here ===>  ")
-        answer = input("Type <y> if you want to change the text or any else key to continue ===>  ")
-        if answer == 'y':
+        answer = input(
+            "Type <y> if you want to change the text or any else key to continue ===>  "
+        )
+        if answer == "y":
             note.data["text"] = input("Type the new text here ===>  ")
-        answer = input("Type <y> if you want to change tags or any else key to continue ===>  ")
-        if answer == 'y':
+        answer = input(
+            "Type <y> if you want to change tags or any else key to continue ===>  "
+        )
+        if answer == "y":
             while True:
-                tags = input("Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
-                if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                tags = input(
+                    "Type tags here (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  "
+                ).split()
+                if all(fullmatch(r"\#\w+", tag) for tag in tags):
                     note.data["tags"] = tags
                     break
                 else:
                     print("Wrong format.")
         return "Note has been edited."
     return "No notes added."
+
 
 def delete_note(notes):
     if notes:
@@ -490,10 +537,11 @@ def delete_note(notes):
         return "Note has been deleted."
     return "No notes added."
 
+
 def find_note(notes):
     note_dict = dict(zip(range(1, len(notes) + 1), notes))
     for number, note in note_dict.items():
-        print(str(number) + ': ' + note.data["title"])
+        print(str(number) + ": " + note.data["title"])
     while True:
         answer = input("Type the number of note ===>  ")
         if answer.isdigit() and 1 <= int(answer) <= len(notes):
@@ -502,30 +550,54 @@ def find_note(notes):
             print(f"Must be the number between 1 and {len(notes)}")
             continue
 
+
 def show_notes(notes):
     if notes:
         while True:
-            answer = input("What are we looking for? (a for all notes and s for specific) a/s ===>  ")
-            if answer == 'a':
+            answer = input(
+                "What are we looking for? (a for all notes and s for specific) a/s ===>  "
+            )
+            if answer == "a":
                 notes_to_print = notes
-                return '\n'.join(str(note) for note in notes_to_print)
-            elif answer == 's':
+                return "\n".join(str(note) for note in notes_to_print)
+            elif answer == "s":
                 while True:
-                    key = input("What element do you want to search by? (title/text/tags) ===>  ")
-                    if key in ('title', 'text'):
+                    key = input(
+                        "What element do you want to search by? (title/text/tags) ===>  "
+                    )
+                    if key in ("title", "text"):
                         element = input(f"Type the {key} you want to look for ===>  ")
-                        notes_to_print = tuple(filter(lambda note: element in note.data[key], notes))
-                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
-                    elif key == 'tags':
+                        notes_to_print = tuple(
+                            filter(lambda note: element in note.data[key], notes)
+                        )
+                        return (
+                            "\n".join(str(note) for note in notes_to_print)
+                            if notes_to_print
+                            else "No such notes."
+                        )
+                    elif key == "tags":
                         while True:
-                            tags = input("Type the tag(s) you want to look for (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  ").split()
-                            if all(fullmatch(r'\#\w+', tag) for tag in tags):
+                            tags = input(
+                                "Type the tag(s) you want to look for (for example: <#tag1> <#multiple_word_tag_2> <#tag3>)  ===>  "
+                            ).split()
+                            if all(fullmatch(r"\#\w+", tag) for tag in tags):
                                 break
                             else:
                                 print("Wrong format.")
                                 continue
-                        notes_to_print = tuple(filter(lambda note: all(tag in note.data["tags"] for tag in tags), notes))
-                        return '\n'.join(str(note) for note in notes_to_print) if notes_to_print else "No such notes."
+                        notes_to_print = tuple(
+                            filter(
+                                lambda note: all(
+                                    tag in note.data["tags"] for tag in tags
+                                ),
+                                notes,
+                            )
+                        )
+                        return (
+                            "\n".join(str(note) for note in notes_to_print)
+                            if notes_to_print
+                            else "No such notes."
+                        )
                     else:
                         print("Wrong format.")
                         continue
@@ -535,51 +607,47 @@ def show_notes(notes):
     else:
         return "No notes added."
 
+
 def show_commands():
     commands = {
         "help": "for help",
         "hello": "just fo say 'Hi!'",
-    #Phone
+        # Phone
         "add [name] [phone]": "add new contact",
         "phone [name]": "get person phone numbers",
         "change [name] [phone]": "change person phone number",
-    #Birthday
+        # Birthday
         "add-birthday [name]": "add person birthday",
         "show-birthday [name]": "get person birthday",
         "change-birthday [name]": "change person birthday",
         "delete-birthday [name]": "delete person birthday",
         "birthdays": "get all persons with birtday next week ",
         "birthdays [days]": "get birtdays list for next custom amount of days",
-    #Email
-
+        # Email
         "add-email [name] [email]": "add email to existing contact",
         "delete-email [name] [email]": "delete existing email of specific contact",
         "email [name]": "get emails of person",
-
-#         "add-email [name]": "add person email",
-#         "show-email [name]": "get person email",
-#         "change-email [name]": "change person email",
-#         "delete-email [name]": "delete person email",
-   
-
-    #Address
+        #         "add-email [name]": "add person email",
+        #         "show-email [name]": "get person email",
+        #         "change-email [name]": "change person email",
+        #         "delete-email [name]": "delete person email",
+        # Address
         "add-address [name] [street] [house_number] [city] [postal_code] [country]": "add",
         "edit-address [name] [street] [house_number] [city] [postal_code] [country]": "edit",
         "show-address [name]": "show person address",
-        "remove-address [name]": "remove an address from a contact by its index",  
-
-    #Note
+        "remove-address [name]": "remove an address from a contact by its index",
+        # Note
         "add-note [name]": "add person note",
         "show-note [name]": "get person note",
         "change-note [name]": "change person note",
         "delete-note [name]": "delete person note",
-    #all
+        # all
         "delete [name]": "delete contact",
         "delete [name] phones": "delete person phones",
         "delete [name] birthday": "delete person birthday",
         "delete [name] email": "delete person email",
         "delete [name] address": "delete person address",
-        "delete [name] notes": "delete person notes",    
+        "delete [name] notes": "delete person notes",
         "all": "for get all contact list",
         "exit": "for exit",
     }
@@ -592,29 +660,29 @@ def show_commands():
 
 @input_error
 def delete(args, book):
-    if len(args) == 1:      # if in args 1 arg
-       arg = args[0]        # get arg from []
-       res = book.delete(arg)
-       return res
+    if len(args) == 1:  # if in args 1 arg
+        arg = args[0]  # get arg from []
+        res = book.delete(arg)
+        return res
     elif len(args) == 2:
         name, field = args
         record = book.find(name)
-        if field == 'phones':
+        if field == "phones":
             res = record.remove_phones()
             return res
-        elif field == 'birthday':
+        elif field == "birthday":
             res = record.remove_birthday()
             return res
-        elif field == 'email':
+        elif field == "email":
             res = record.remove_email()
             return res
-        elif field == 'address':
+        elif field == "address":
             res = record.remove_address()
             return res
-        elif field == 'notes':
+        elif field == "notes":
             res = record.remove_notes()
             return res
-        
+
 
 ## --------- Не стирать, колись продовжу --------------------------------
 # @input_error
@@ -625,7 +693,7 @@ def delete(args, book):
 #         print(f"Функція буде шукати date {arg}")
 #         for record in book.values():
 #             print("record", record)
-#     #   record виводить 
+#     #   record виводить
 #             if record.birthday:
 #                 print(record.birthday, record.birthday.value, arg, Birthday(arg))
 #                 print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
@@ -637,11 +705,9 @@ def delete(args, book):
 #         #book.find_in_field("phone", arg)
 #     elif is_looks_email(arg):
 #         print(f"Функція буде шукати email {arg}")
-#         #book.find_in_field("email", arg)   
+#         #book.find_in_field("email", arg)
 #     # Address not aveilable to check:
 #     # name
 #     else:
 #         return "Contact does not exist."
 ###----------------------------------------------------------------------------
-        
-
