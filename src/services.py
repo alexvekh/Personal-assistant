@@ -214,12 +214,24 @@ def change_contact_field(args, book):
 
 
 def show_all(book):
-    res = []
-    res.append("{:^20}".format("CONTACTS"))
-    res.append("{:^20}".format("-" * 10))
+# ============= was table format ==============================================
+#     res = []
+#     res.append("{:^20}".format("CONTACTS"))
+#     res.append("{:^20}".format("-" * 10))
+#     for name, record in book.items():
+#         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
+#     res.append("{:^20}".format("=" * 20))
+# =============================================================================
+    res = ["{:^60}".format("CONTACTS"), "{:-^60}".format("")]
     for name, record in book.items():
-        res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
-    res.append("{:^20}".format("=" * 20))
+        emails = ", ".join(email.value for email in record.emails) or "No Email"
+        phones = ", ".join(phone.value for phone in record.phones) or "No Phone"
+        birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "No Birthday"
+        addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
+        
+        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\n"
+        res.append(contact_info)
+        res.append("{:-^60}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
 
 
