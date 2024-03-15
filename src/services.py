@@ -274,7 +274,7 @@ def show_birthday(args, book):
     else:
         return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
 
-
+@input_error
 def change_birthday(args, book):
     name, birthday = args
     if name in book:
@@ -284,7 +284,7 @@ def change_birthday(args, book):
     else:
         return f"Sorry, {name} isn't exist."
 
-
+@input_error
 def delete_birthday(args, book):
     (name,) = args
     if name in book:
@@ -297,7 +297,7 @@ def delete_birthday(args, book):
     else:
         return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
 
-
+@input_error
 def birthdays(args, book):
     if args:
         days = args[0]
@@ -307,6 +307,7 @@ def birthdays(args, book):
 
 
 # Email  ----------------------------------------------------------------------
+@input_error        
 def get_emails(record):
     """
     Function to retrieve emails from a record.
@@ -348,7 +349,6 @@ def add_email(args, book):
     else:
         return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
 
-
 # "email name": "get email of specific contact"
 @input_error
 def show_email(args, book):
@@ -378,7 +378,7 @@ def show_email(args, book):
 
         return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
-#@input_error
+@input_error
 def change_email(args, book):
     name = args[0]
     if name in book:
@@ -401,59 +401,6 @@ def change_email(args, book):
             return "Contact has no emails."
     else:
         return "No such contact."
-        
-
-
-@input_error
-def add_email(args, book):
-    """
-    Function to add an email to a contact record.
-
-    Args:
-        args (tuple): A tuple containing the name (str) and email (str) to add.
-        book (dict): A dictionary representing the address book.
-
-    Returns:
-        str: A confirmation message of adding the email.
-
-    Raises:
-        ValueError: If the input arguments are not in the correct format.
-    """
-    name, email = args
-    if name in book:
-        record = book[name]
-        record.emails.append(Email(email))
-        return f"{name}'s email added"
-    else:
-        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
-
-
-# "email name": "get email of specific contact"
-@input_error
-def show_email(args, book):
-    """
-    Function to get the email of a specific contact.
-
-    Args:
-        args (tuple): A tuple containing the name (str) of the contact.
-        book (dict): A dictionary representing the address book.
-
-    Returns:
-        str: A string containing the contact's name and their email(s).
-
-    Raises:
-        ValueError: If the input arguments are not in the correct format.
-    """
-    (name,) = args
-    if name in book:
-        record = book[name]
-        res = []
-        for email in record.emails:
-            res.append(email.value)
-        return f"{name}: {','.join(res)}"
-    else:
-        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
-
 
 # "change-email name email": "changing email of existing contact"
 @input_error
