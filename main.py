@@ -6,8 +6,6 @@ from src.services import *
 
 from src.disk import save_to_json, load_from_json
 
-ature/serialization
-=======
 command_keywords = {
     "add": ["додати", "new", "new contact"],
     "delete": ["видалити", "remove"],
