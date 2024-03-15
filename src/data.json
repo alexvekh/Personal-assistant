@@ -1,1 +1,1 @@
-[{"name": "Alex", "phones": ["1111111111"], "birthday": "23.08.1978"}, {"name": "Nick", "phones": ["2233445566"], "birthday": "14.03.1999"}]
+{"records": [{"name": "Vasya", "phones": ["1234567890"], "birthday": "21.10.1965", "emails": ["vasyakirpich@gmail.com", "vasyadodik@yahoo.ua"], "addresses": ["petrova, 21, kyiv, 22847, ukraine"]}, {"name": "Petya", "phones": ["0987654321"], "birthday": null, "emails": [], "addresses": []}], "notes": [{"title": "some_title", "text": "asldkjbclhgsv", "tags": ["#tag", "#tag2"]}]}
