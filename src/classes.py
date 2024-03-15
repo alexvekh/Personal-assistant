@@ -1,8 +1,9 @@
 from collections import UserDict
 from datetime import datetime
-from src.birthdays import get_birthdays_per_week
-from src.validate import date_is_valid
+from src.birthdays import get_birthdays_per_week, get_birthdays_by_days
+from src.validate import name_is_valid, phone_is_valid, date_is_valid, email_is_valid
 import re
+
 
 class Field:
     def __init__(self, value):
@@ -11,29 +12,46 @@ class Field:
     def __str__(self):
         return str(self.value)
 
+
 class Name(Field):
     def __init__(self, value):
-        if len(value) > 0 and value[0].isalpha():
+        if name_is_valid(value):
             self.value = value.title()
         else:
-            raise NameError('Name should starts with letter')
+            raise NameError("Name should starts with letter")
+
 
 class Phone(Field):
     def __init__(self, value):
-        if len(value) == 10 and value.isdigit():
+        if phone_is_valid(value):
             self.value = value
         else:
-            raise ValueError('Phone should be 10 digits format')
+            raise ValueError("Phone should be 10 digits format")
+
+
+class Email(Field):
+    def __init__(self, value):
+        if email_is_valid(value):
+            self.value = value
+        else:
+            raise ValueError("Invalid email format")
+
+    # @staticmethod
+    # def validate_email(value):
+    #     pattern = r'^[\w\.-]+@[\w\.-]{2,}\.\w{2,}$'
+    #     return re.match(pattern, value) is not None
+
 
 class Birthday(Field):
     def __init__(self, value: str):
         if date_is_valid(value):
             try:
-                self.value = datetime.strptime(value, '%d.%m.%Y').date()
+                self.value = datetime.strptime(value, "%d.%m.%Y").date()
             except ValueError as e:
-                raise ValueError('Invalid date value: ' + str(e))
+                raise ValueError("Invalid date value: " + str(e))
         else:
-            raise ValueError('We couldn\'t validate entered date. Please, try again')
+            raise ValueError("We couldn't validate entered date. Please, try again")
+
 
 class Address(Field):
     def __init__(self, street, house_number, city, postal_code=None, country=None):
@@ -51,16 +69,32 @@ class Address(Field):
             address_parts.append(self.country)
         return ", ".join(address_parts)
 
-        
+
+class Note(UserDict):
+    def __init__(self, title, text, tags):
+        super().__init__()
+        self.data["title"] = title
+        self.data["text"] = text
+        self.data["tags"] = tags
+
+    def __str__(self):
+        return f"{'=' * 50}\nTitle: {self.data['title']}\nText: {self.data['text']}\nTags: {' '.join(self.data['tags'])}"
+
+
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        self.emails = []
         self.birthday = None
         self.addresses = []
-    
+        self.emails = []
+
     def add_phone(self, value):
         self.phones.append(Phone(value))
+
+    def add_email(self, value):
+        self.emails.append(Email(value))
 
     def remove_phone(self, phone):
         self.phones.remove(phone)
@@ -73,26 +107,52 @@ class Record:
                 print(f"Phone {phone} was changed to {new_phone}.")
                 found = True
         if not found:
-            raise IndexError(f'Phone {phone} wasn\'t found') 
+            raise IndexError(f"Phone {phone} wasn't found")
 
     def find_phone(self, phone):
         for p in self.phones:
             if p.value == phone:
                 return p.value
+
     #
     def add_birthday(self, value):
         self.birthday = Birthday(value)
         return "birthday added"
-    
+
     def __str__(self):
         if self.birthday == None:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
         else:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
-        
+
     def add_address(self, street, house_number, city, postal_code=None, country=None):
         self.addresses.append(Address(street, house_number, city, postal_code, country))
-    
+
+    def edit_address(self, street, house_number, city, postal_code=None, country=None):
+        if (
+            self.addresses
+        ):  # варіанти: ?  if self.addresses[0]  # if len(self.addresses) > 0
+            address = self.addresses[0]
+            if street:
+                address.street = street
+            if house_number:
+                address.house_number = house_number
+            if city:
+                address.city = city
+            if postal_code:
+                address.postal_code = postal_code
+            if country:
+                address.country = country
+            return "Address edited."
+        else:
+            return "No address to edit."
+
+    def remove_address(self):
+        self.addresses = []
+
+    def add_address(self, street, house_number, city, postal_code=None, country=None):
+        self.addresses.append(Address(street, house_number, city, postal_code, country))
+
     def edit_address(self, street, house_number, city, postal_code=None, country=None):
         if self.addresses:
             address = self.addresses[0]
@@ -109,10 +169,10 @@ class Record:
             return "Address edited."
         else:
             return "No address to edit."
-        
-        
+
     def remove_address(self):
         self.addresses = []
+
 
 class AddressBook(UserDict):
     def __init__(self, name="contacts"):
@@ -120,12 +180,12 @@ class AddressBook(UserDict):
         self.name = name
 
     def __dict__(self):
-        return {'name': self.name, 'records': dict(self.data)}  # Restructure for JSON
+        return {"name": self.name, "records": dict(self.data)}  # Restructure for JSON
 
     def add_record(self, record):
         self.data[record.name.value] = record
-        #print(f'Added new record: "{record}"')
-        
+        # print(f'Added new record: "{record}"')
+
     def find(self, value):
         for name, record in self.data.items():
             if name == value:
@@ -140,23 +200,37 @@ class AddressBook(UserDict):
                 if key == name:
                     key_for_delete = key
             self.data.pop(key_for_delete)
-            print(f'{name}\'s contact was deleted')
-        except(KeyError):
-            print(f'{name}\'s contact wasn\'t found')
-    
+            print(f"{name}'s contact was deleted")
+        except KeyError:
+            print(f"{name}'s contact wasn't found")
+
     def get_birthdays_per_week(self):
         users = []
         for name, record in self.data.items():
             if record.birthday != None:
-                users.append({'name': name, 'birthday': record.birthday.value})
+                users.append({"name": name, "birthday": record.birthday.value})
         return get_birthdays_per_week(users)
-    
+
+    def get_birthdays_by_days(self, days):
+        users = []
+        for name, record in self.data.items():
+            if record.birthday != None:
+                users.append(
+                    {
+                        "name": name,
+                        "phones": record.phones,
+                        "birthday": record.birthday.value,
+                    }
+                )
+        return get_birthdays_by_days(users, days)
+
+
 class Note(UserDict):
     def __init__(self, title, text, tags):
         super().__init__()
         self.data["title"] = title
         self.data["text"] = text
         self.data["tags"] = tags
-        
+
     def __str__(self):
         return f"{'=' * 50}\nTitle: {self.data['title']}\nText: {self.data['text']}\nTags: {' '.join(self.data['tags'])}"
