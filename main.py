@@ -33,10 +33,18 @@ def main():
 # All
         elif command == "all":
             print(show_all(book))#
-        elif command == "find":
-            print(find(args, book))
         elif command == "delete":
             print(delete(args, book))
+        # elif command == "find":      # відкладена
+        #     print(find(args, book))
+
+# Find  
+        elif command == "find-contact":
+            print(find_contacts(args, book))
+        
+
+
+
 #Phone
         elif command == "add":
             print(add_contact(args, book))
@@ -55,7 +63,7 @@ def main():
         elif command == "delete-birthday":
             print(delete_birthday(args, book))       
         elif command == "birthdays":
-            birthdays(book)
+            birthdays(args, book)
 #Email
         elif command == "add-email":
             print(add_email(args, book))
