@@ -26,32 +26,43 @@ def main():
             save_to_json(book)
             print("Good bye!")
             break
-
         elif command == "hello":
             print("How can I help you?")
         elif command == "help":
             print(show_commands())
+# All
+        elif command == "all":
+            print(show_all(book))#
+        elif command == "find":
+            print(find(args, book))
+        elif command == "delete":
+            print(delete(args, book))
+#Phone
         elif command == "add":
             print(add_contact(args, book))
+        elif command == "phone":
+            print(show_phone(args, book))#
         elif command == "change":
             print(change_contact(args, book))
-        elif command == "phone":
-            print(show_phone(args, book))
-        elif command == "all":
-            print(show_all(book))
+
+#Birthday
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "change-birthday":
             print(change_birthday(args, book))
+        elif command == "delete-birthday":
+            print(delete_birthday(args, book))       
         elif command == "birthdays":
             birthdays(book)
+#Email
         elif command == "add-email":
             print("Буде працювати функція add_email(args, book)")
         elif command == "show-email":
             print("Буде працювати функція show_email(args, book)")
 
+#Address
         elif command == "add-address":
             print(add_address(args, book))
         elif command == "edit-address":
@@ -60,7 +71,7 @@ def main():
             print(show_address(args,book))
         elif command == "remove-address":
             print(remove_address(args, book))
-
+# Note
         elif command == "add-note":
             print(new_note(notes))
         elif command == "edit-note":
@@ -70,13 +81,6 @@ def main():
         elif command == "show-notes":
             print(show_notes(notes))
             print('=' * 50)
-
-        elif command == "find":
-            print(find(args, book))
-        elif command == "delete":
-            print(delete(args, book))
-        elif command == "birthdays":
-            birthdays(args, book)
 
         else:
             print('Invalid command. Enter "help" for help')
