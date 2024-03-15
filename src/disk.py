@@ -1,5 +1,5 @@
 import json
-from src.classes import AddressBook, Record, Name, Birthday, Phone
+from src.classes import AddressBook, Record, Name, Birthday, Phone, Email
 from datetime import datetime
 
 file = 'src/data.json'
@@ -16,6 +16,7 @@ def convert_to_json(book):
                         if record.birthday
                         else None
                     ),
+                    "emails": [email.value for email in record.emails]
                 }
             )
     return records
@@ -39,11 +40,18 @@ def load_from_json():
             phone_list = []
             for phone in contact['phones']:
                 phone_list.append(Phone(phone))
+
+            email_list = []
+            for email in contact['emails']:
+                email_list.append(Email(email))
+
+            
             birthday = Birthday(contact['birthday']) if contact['birthday'] else None
 
             record = Record(name)
             record.phones = phone_list
             record.birthday = birthday
+            record.emails = email_list
 
             book.add_record(record)
     print("Data loaded from file.")

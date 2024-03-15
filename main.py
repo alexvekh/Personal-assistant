@@ -58,13 +58,11 @@ def main():
             birthdays(book)
 #Email
         elif command == "add-email":
-            pass # ♨️♨️♨️ "Буде працювати функція add_email(args, book)"
-        elif command == "change-email":
-            pass # ♨️♨️♨️
-        elif command == "delete-email":
-            pass # ♨️♨️♨️
+            print(add_email(args, book))
         elif command == "email": 
-            pass # ♨️♨️♨️ "Буде працювати функція show_email(args, book)"
+            print(show_email(args, book))
+        elif command == "delete-email":
+            print(delete_email(args, book))
 
 #Address
         elif command == "add-address":

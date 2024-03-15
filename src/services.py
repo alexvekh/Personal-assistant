@@ -106,7 +106,6 @@ def change_contact(args, book):
     else:
         return f"Sorry, {name} not found."
 
-
 def get_phones(record):   # Service for get phones from record
     res = []
     for phone in record.phones:
@@ -285,17 +284,82 @@ def get_emails(record):
     else:
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
 
+# "add-email name email": "adding email to existing contact"
+@input_error
+def add_email(args, book):
+    """
+    Function to add an email to a contact record.
 
+    Args:
+        args (tuple): A tuple containing the name (str) and email (str) to add.
+        book (dict): A dictionary representing the address book.
 
-#
-#
-#
-#
-#
-#
-#
-#
+    Returns:
+        str: A confirmation message of adding the email.
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, email = args
+    if name in book:
+        record = book[name]
+        record.emails.append(Email(email))
+        return f"{name}'s email added"
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
 
+# "email name": "get email of specific contact"
+@input_error
+def show_email(args, book):
+    """
+    Function to get the email of a specific contact.
+
+    Args:
+        args (tuple): A tuple containing the name (str) of the contact.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A string containing the contact's name and their email(s).
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, = args
+    if name in book:
+        record = book[name]
+        res = []
+        for email in record.emails:
+            res.append(email.value)
+        return f"{name}: {','.join(res)}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
+# "change-email name email": "changing email of existing contact"
+@input_error
+def delete_email(args, book):
+    """
+    Function to delete an email from an existing contact.
+
+    Args:
+        args (tuple): A tuple containing the name (str) of the contact and the email (str) to delete.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A confirmation message of deleting the email.
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, email_to_delete = args
+    if name in book:
+        record = book[name]
+        for email in record.emails:
+            if email.value == email_to_delete:
+                record.emails.remove(email)
+                return f"Email {email_to_delete} deleted from {name}'s contacts."
+        return f"Email {email_to_delete} not found in {name}'s contacts."
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 
 
@@ -457,10 +521,9 @@ def show_commands():
         "birthdays": "get all persons with birtday next week ",
         "birthdays [days]": "get birtdays list for next custom amount of days",
     #Email
-        "add-email [name] [email]": "adding email to existing contact",           # 🔰
-        "change-email [name] [new_email]": "changing email of existing contact",  # 🔰
-        "delete-email [name]": "to delete email of specific contact",             # 🔰
-        "email [name]": "get email of specific contact",                          # 🔰
+        "add-email [name] [email]": "add email to existing contact",
+        "delete-email [name] [email]": "delete existing email of specific contact",
+        "email [name]": "get emails of person",
     #Address
         "add-address name street house_number city postal_code country": "for add an address to a contact",
         #"show-address name"
@@ -604,7 +667,6 @@ def delete(args, book):
             return res
 
 
-
 def show_notes(notes):
     if notes:
         while True:
@@ -637,60 +699,3 @@ def show_notes(notes):
                 continue
     else:
         return "No notes added."
-
-
-# 💎 RECOVERED FUNCS  
-@input_error
-def show_phone(args, book):
-    name, = args
-    if name in book:
-        record = book[name]
-        # Out         print(record)
-        res = []
-        for phone in record.phones:
-            res.append(phone.value)
-        return f"{name}: {','.join(res)}"
-    else:
-        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
-
-@input_error
-def show_all(book):
-    res = []
-    res.append("{:^20}".format("CONTACTS"))
-    res.append("{:^20}".format("-"*10))
-    for name, record in book.items():
-        res.append("{:<8} {} ".format(name+":", get_phones(record)))
-    res.append("{:^20}".format("="*20))
-    return "\n".join(res)
-
-@input_error
-def add_birthday(args, book):
-    name, birthday = args
-    if name in book:
-        record = book[name]
-        record.add_birthday(birthday)
-        return f"{name}'s birthday added"
-    else:
-        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
-
-@input_error
-def show_birthday(args, book):
-    name, = args
-    if name in book:
-        record = book[name]
-        if record.birthday != None:
-            birthday = record.birthday.value.strftime("%d.%m.%Y")
-            return f"{name}'s birthday is {birthday}"
-        else:
-            return f"{name}'s birthday isn't recorded"
-    else:
-        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
-    
-# 💎 LOST FUNCS
-@input_error
-def change_birthday(args, book):
-    pass # ♨️♨️♨️
-
-@input_error
-def delete(args, book):
-    pass # ♨️♨️♨️
