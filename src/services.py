@@ -88,7 +88,7 @@ def show_found_contacts(contacts):
     return "\n".join(res)
 
 @input_error
-def add_contact(args, book):
+def add_contact(book, *args):
     """
     Function to add a new contact.
 
@@ -99,12 +99,23 @@ def add_contact(args, book):
     Returns:
         String with information about the addition result.
     """
-    name, phone, email = args
+    if len(args) == 2:
+        name, phone = args
+        email = None
+    elif len(args) == 3:
+        name, phone, email = args
+    else:
+        return "Error: Invalid number of arguments. Please provide name and phone, or name, phone, and email."
+    
     if len(phone) != 10 or not phone.isdigit():
         return "Error: Invalid phone number format. Please enter a 10-digit number."
     record = Record(name)
     record.add_phone(phone)
-    record.add_email(email)
+
+    if email:
+        # record.add_email(email) # 🔴 'Record' object has no attribute 'add_email'
+        return "Error: 'adding email func comming soon...'"
+
     book[name] = record
     return "Contact added."
 
@@ -538,3 +549,59 @@ def show_notes(notes):
     else:
         return "No notes added."
 
+
+# 💎 RECOVERED FUNCS  
+@input_error
+def show_phone(args, book):
+    name, = args
+    if name in book:
+        record = book[name]
+        # Out         print(record)
+        res = []
+        for phone in record.phones:
+            res.append(phone.value)
+        return f"{name}: {','.join(res)}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
+@input_error
+def show_all(book):
+    res = []
+    res.append("{:^20}".format("CONTACTS"))
+    res.append("{:^20}".format("-"*10))
+    for name, record in book.items():
+        res.append("{:<8} {} ".format(name+":", get_phones(record)))
+    res.append("{:^20}".format("="*20))
+    return "\n".join(res)
+
+@input_error
+def add_birthday(args, book):
+    name, birthday = args
+    if name in book:
+        record = book[name]
+        record.add_birthday(birthday)
+        return f"{name}'s birthday added"
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
+@input_error
+def show_birthday(args, book):
+    name, = args
+    if name in book:
+        record = book[name]
+        if record.birthday != None:
+            birthday = record.birthday.value.strftime("%d.%m.%Y")
+            return f"{name}'s birthday is {birthday}"
+        else:
+            return f"{name}'s birthday isn't recorded"
+    else:
+        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
+    
+# 💎 LOST FUNCS
+@input_error
+def change_birthday(args, book):
+    pass # ♨️♨️♨️
+
+@input_error
+def delete(args, book):
+    pass # ♨️♨️♨️

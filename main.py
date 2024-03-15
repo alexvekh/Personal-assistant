@@ -32,7 +32,7 @@ def main():
         elif command == "help":
             print(show_commands())
         elif command == "add":
-            print(add_contact(args, book))
+            print(add_contact(book, *args))
         elif command == "change":
             print(change_contact(args, book))
         elif command == "phone":
