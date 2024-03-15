@@ -82,10 +82,15 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
-        self.addresses = [] 
+        self.addresses = []
+        self.emails = []
+
     
     def add_phone(self, value):
         self.phones.append(Phone(value))
+
+    def add_email(self, value):
+        self.emails.append(Email(value))
 
     def remove_phone(self, phone):
         self.phones.remove(phone)
