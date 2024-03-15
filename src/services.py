@@ -4,7 +4,9 @@ from datetime import datetime
 from src.classes import Record
 from collections import defaultdict
 from re import fullmatch
+
 from src.validate import email_is_valid
+
 
 
 def input_error(func):
@@ -106,8 +108,8 @@ def get_phones(record):  # Service for get phones from record
 
 
 # Find ----------------------------------------------------------------
-def find_contacts(args, book):
-    field, value = args
+
+def find_contacts(book, field, value):
     """
     Function to search for contacts by a given field and value.
 
@@ -117,31 +119,42 @@ def find_contacts(args, book):
         value: Value to search for.
 
     Returns:
-        List of found contacts.
+        List of strings with information about found contacts.
     """
 
+    found_contacts_info = []
     if field == "name":
-        return str(book[value]) if value in book else []
+        found_contacts = [record for record in book.values() if record.name.lower() == value.lower()]
     elif field == "phone":
-        return [
+        found_contacts = [
             record
             for record in book.values()
             if value in [phone.value for phone in record.phones]
         ]
     elif field == "birthday":
-        return [
+        found_contacts = [
             record
             for record in book.values()
             if record.birthday and record.birthday.value.strftime("%d.%m.%Y") == value
         ]
     elif field == "email":
-        return [
+        found_contacts = [
             record
             for record in book.values()
             if value in [email.value for email in record.emails]
         ]
     else:
-        return []
+        found_contacts = []
+
+    for record in found_contacts:
+        contact_info = f"{record.name}:"
+        contact_info += f"  Phones: {get_phones(record)}"
+        contact_info += f"  Emails: {get_emails(record)}"
+        contact_info += f"  Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}"
+        contact_info += f"  Note: {record.note if record.note else 'No note'}"
+        found_contacts_info.append(contact_info)
+
+    return found_contacts_info
 
 
 def show_found_contacts(contacts):
@@ -352,7 +365,9 @@ def show_email(args, book):
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
+
     name = args[0]
+
     if name in book:
         record = book[name]
         res = []
@@ -360,6 +375,7 @@ def show_email(args, book):
             res.append(email.value)
         return f"{name}: {','.join(res)}"
     else:
+
         return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 @input_error
@@ -695,4 +711,6 @@ def delete(args, book):
 #     # name
 #     else:
 #         return "Contact does not exist."
+
 ###----------------------------------------------------------------------------
+
