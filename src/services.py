@@ -4,6 +4,7 @@ from datetime import datetime
 from src.classes import Record
 from collections import defaultdict
 from re import fullmatch
+from src.validate import email_is_valid
 
 
 def input_error(func):
@@ -351,7 +352,7 @@ def show_email(args, book):
     Raises:
         ValueError: If the input arguments are not in the correct format.
     """
-    (name,) = args
+    name = args[0]
     if name in book:
         record = book[name]
         res = []
@@ -359,8 +360,32 @@ def show_email(args, book):
             res.append(email.value)
         return f"{name}: {','.join(res)}"
     else:
-        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+        return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
+#@input_error
+def change_email(args, book):
+    name = args[0]
+    if name in book:
+        if book[name].emails:
+            for number, email in enumerate(book[name].emails, 1):
+                print(f"{number}: {email}")
+            while True:
+                answer = input("Type the number of email you want to change ===>  ")
+                if answer.isdigit() and 1 <= int(answer) <= len(book[name].emails):
+                    while True:
+                        new_email = input("Enter new email ==>  ")
+                        if email_is_valid(new_email):
+                            book[name].emails[int(answer)-1] = Email(new_email)
+                            return "Email has been changed."
+                        else:
+                            print("Seems like this email is incorrect. Try again.")
+                else:
+                    print("Must be the number between 1 and " + str(len(book[name].emails)))
+        else:
+            return "Contact has no emails."
+    else:
+        return "No such contact."
+        
 
 @input_error
 def add_email(args, book):

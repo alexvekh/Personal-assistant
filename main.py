@@ -6,6 +6,7 @@ from src.services import *
 
 from src.disk import save_to_json, load_from_json
 
+
 command_keywords = {
     "add": ["додати", "new", "new contact"],
     "delete": ["видалити", "remove"],
@@ -120,9 +121,10 @@ def main():
         # Email
         elif command == "add-email":
             print(colored(add_email(args, book), 'cyan', attrs=['bold']))
-        elif command == "email": 
-
+        elif command == "email":
             print(show_email(args, book))
+        elif command == "change-email":
+            print(change_email(args, book))
         elif command == "delete-email":
             print(colored(delete_email(args, book), 'red', attrs=['bold']))
 
