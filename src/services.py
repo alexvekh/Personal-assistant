@@ -5,7 +5,7 @@ from src.classes import Record
 from collections import defaultdict
 from re import fullmatch
 
-# Decorator
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
