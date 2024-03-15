@@ -1,10 +1,10 @@
-from src.classes import AddressBook
+from .src.classes import AddressBook
 from termcolor import colored
-from src.services import *
+from .src.services import *
 
 # from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands, add_address, edit_address, show_address, remove_address, new_note, edit_note, delete_note, show_notes
 
-from src.disk import save_to_json, load_from_json
+from .src.disk import save_to_json, load_from_json
 
 command_keywords = {
     "add": ["додати", "new", "new contact"],
@@ -49,12 +49,7 @@ def guess_command(user_input):
 
 
 def main():
-    # book = AddressBook()
-    # print(book)
     book, notes = load_from_json()
-    # print("main load", book)
-    # print("main new", book)
-
     print("Welcome to the assistant bot!")
     # Після визначення функції main() і перед while True:
     while True:

@@ -1,7 +1,7 @@
-from src.classes import Record, Birthday, AddressBook, Email, Phone, Note, Note
-from src.check import *
+from .classes import Record, Birthday, AddressBook, Email, Phone, Note, Note
+from .check import *
 from datetime import datetime
-from src.classes import Record
+from .classes import Record
 from collections import defaultdict
 from re import fullmatch
 
