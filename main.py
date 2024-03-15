@@ -90,8 +90,8 @@ def main():
         #     print(find(args, book))
 
         # Find
-        elif command == "find-contact":
-            print(find_contacts(args, book))
+        elif command == "find":
+            print(find(args, book))
 
 #Phone
 
