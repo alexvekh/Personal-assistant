@@ -270,16 +270,80 @@ def get_emails(record):
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
 
 
+def add_email(args, book):
+    """
+    Function to add an email to a contact record.
 
-#
-#
-#
-#
-#
-#
-#
-#
+    Args:
+        args (tuple): A tuple containing the name (str) and email (str) to add.
+        book (dict): A dictionary representing the address book.
 
+    Returns:
+        str: A confirmation message of adding the email.
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, email = args
+    if name in book:
+        record = book[name]
+        record.emails.append(Email(email))
+        return f"{name}'s email added"
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
+# "email name": "get email of specific contact"
+@input_error
+def show_email(args, book):
+    """
+    Function to get the email of a specific contact.
+
+    Args:
+        args (tuple): A tuple containing the name (str) of the contact.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A string containing the contact's name and their email(s).
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, = args
+    if name in book:
+        record = book[name]
+        res = []
+        for email in record.emails:
+            res.append(email.value)
+        return f"{name}: {','.join(res)}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
+# "change-email name email": "changing email of existing contact"
+@input_error
+def delete_email(args, book):
+    """
+    Function to delete an email from an existing contact.
+
+    Args:
+        args (tuple): A tuple containing the name (str) of the contact and the email (str) to delete.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A confirmation message of deleting the email.
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, email_to_delete = args
+    if name in book:
+        record = book[name]
+        for email in record.emails:
+            if email.value == email_to_delete:
+                record.emails.remove(email)
+                return f"Email {email_to_delete} deleted from {name}'s contacts."
+        return f"Email {email_to_delete} not found in {name}'s contacts."
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 
 

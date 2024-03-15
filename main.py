@@ -66,9 +66,11 @@ def main():
             birthdays(args, book)
 #Email
         elif command == "add-email":
-            print("Буде працювати функція add_email(args, book)")
-        elif command == "show-email":
-            print("Буде працювати функція show_email(args, book)")
+            print(add_email(args, book))
+        elif command == "email": 
+            print(show_email(args, book))
+        elif command == "delete-email":
+            print(delete_email(args, book))
 
 #Address
         elif command == "add-address":
