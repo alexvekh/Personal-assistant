@@ -1,9 +1,9 @@
-from src.classes import Record, Birthday, AddressBook, Email
+from src.classes import Record, Birthday, AddressBook, Email, Note
 from src.check import *
 # from datetime import datetime
 from src.classes import Record
 #from collections import defaultdict
-# from re import fullmatch
+from re import fullmatch
 
 def input_error(func):
     """
@@ -45,6 +45,78 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
+#Phone -----------------------------------------------------------------------------
+@input_error
+def add_contact(args, book):
+    """
+    Function to add a new contact.
+
+    Args:
+        args: Command line arguments.
+        book: Dictionary with contacts.
+
+    Returns:
+        String with information about the addition result.
+    """
+    name, phone = args
+    if len(phone) != 10 or not phone.isdigit():
+        return "Error: Invalid phone number format. Please enter a 10-digit number."
+    record = Record(name)
+    record.add_phone(phone)
+    book[name] = record
+    return "Contact added."
+
+def show_phone(args, book):
+    name, = args
+    if name in book:
+        record = book[name]
+
+        res = []
+        for phone in record.phones:
+            res.append(phone.value)
+        return f"{name}: {','.join(res)}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+
+@input_error
+def change_contact(args, book):
+    """
+    Function to change an existing contact.
+
+    Args:
+        args: Command line arguments.
+        book: Dictionary with contacts.
+
+    Returns:
+        String with information about the change result.
+    """
+    name, field, new_value = args
+    if name in book:
+        record = book[name]
+        if field == "phone":
+            record.phones = [Phone(new_value)]
+        elif field == "birthday":
+            record.birthday = Birthday(new_value)
+        elif field == "email":
+            record.emails = [Email(new_value)]
+        elif field == "note":
+            record.note = new_value
+        return f"Contact {name} updated."
+    else:
+        return f"Sorry, {name} not found."
+
+
+def get_phones(record):   # Service for get phones from record
+    res = []
+    for phone in record.phones:
+        res.append(phone.value)
+    if res[0]:
+        return ','.join(res)
+    else:
+        return "No phone"
+
+#Contact ----------------------------------------------------------------
 def find_contacts(book, field, value):
     """
     Function to search for contacts by a given field and value.
@@ -86,54 +158,6 @@ def show_found_contacts(contacts):
         res.append(f"  Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}")
         res.append(f"  Note: {record.note if record.note else 'No note'}")
     return "\n".join(res)
-
-@input_error
-def add_contact(args, book):
-    """
-    Function to add a new contact.
-
-    Args:
-        args: Command line arguments.
-        book: Dictionary with contacts.
-
-    Returns:
-        String with information about the addition result.
-    """
-    name, phone, email = args
-    if len(phone) != 10 or not phone.isdigit():
-        return "Error: Invalid phone number format. Please enter a 10-digit number."
-    record = Record(name)
-    record.add_phone(phone)
-    record.add_email(email)
-    book[name] = record
-    return "Contact added."
-
-@input_error
-def change_contact(args, book):
-    """
-    Function to change an existing contact.
-
-    Args:
-        args: Command line arguments.
-        book: Dictionary with contacts.
-
-    Returns:
-        String with information about the change result.
-    """
-    name, field, new_value = args
-    if name in book:
-        record = book[name]
-        if field == "phone":
-            record.phones = [Phone(new_value)]
-        elif field == "birthday":
-            record.birthday = Birthday(new_value)
-        elif field == "email":
-            record.emails = [Email(new_value)]
-        elif field == "note":
-            record.note = new_value
-        return f"Contact {name} updated."
-    else:
-        return f"Sorry, {name} not found."
 
 @input_error
 def find_contact_by_field(args, book):
@@ -180,16 +204,71 @@ def change_contact_field(args, book):
         return f"Contact {name} updated."
     else:
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
-    
-def get_phones(record):   # Service for get phones from record
-    res = []
-    for phone in record.phones:
-        res.append(phone.value)
-    if res[0]:
-        return ','.join(res)
-    else:
-        return "No phone"
 
+    
+def show_all(book):
+    res = []
+    res.append("{:^20}".format("CONTACTS"))
+    res.append("{:^20}".format("-"*10))
+    for name, record in book.items():
+        res.append("{:<8} {} ".format(name+":", get_phones(record)))
+    res.append("{:^20}".format("="*20))
+    return "\n".join(res)
+
+# Birthday ----------------------------------------------------------------
+@input_error
+def add_birthday(args, book):
+    name, birthday = args
+    if name in book:
+        record = book[name]
+        record.add_birthday(birthday)
+        return f"{name}'s birthday added"
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
+@input_error
+def show_birthday(args, book):
+    name, = args
+    if name in book:
+        record = book[name]
+        if record.birthday != None:
+            birthday = record.birthday.value.strftime("%d.%m.%Y")
+            return f"{name}'s birthday is {birthday}"
+        else:
+            return f"{name}'s birthday isn't recorded"
+    else:
+        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
+
+def change_birthday(args, book):
+    name, birthday = args
+    if name in book:
+        record = book[name]
+        record.add_birthday(birthday)
+        return f"{name}'s birthday changed"
+    else:
+        return f"Sorry, {name} isn't exist."
+
+def delete_birthday(args, book):
+    name, = args
+    if name in book:
+        record = book[name]
+        if record.birthday != None:
+            res = record.remove_birthday()
+            return res
+        else:
+            return f"No birthday for {name}"
+    else:
+        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
+
+
+def birthdays(args, book):
+    if args:
+        days = args[0]
+        book.get_birthdays_by_days(days)
+    else:
+        book.get_birthdays_per_week()
+
+# Email  ----------------------------------------------------------------------
 def get_emails(record):
     """
     Function to retrieve emails from a record.
@@ -208,15 +287,20 @@ def get_emails(record):
 
 
 
-def birthdays(args, book):
-    if args:
-        days = args[0]
-        book.get_birthdays_by_days(days)
-    else:
-        book.get_birthdays_per_week()
+#
+#
+#
+#
+#
+#
+#
+#
 
 
 
+
+
+# Address -----------------------------------------------------------------
 @input_error
 def add_address(args, book):
     name, street, house_number, city, postal_code, country = args
@@ -242,6 +326,7 @@ def show_address(args, book):
     else:
         return "Contact does not exist."
 
+
 def edit_address(args, book):
     name, street, house_number, city, postal_code, country = args
     if name in book.data:
@@ -259,8 +344,10 @@ def remove_address(args, book):
         return "Address removed."
     else:
         return "Contact does not exist."
-    
 
+
+
+# Note --------------------------------------------------------------------
 
 def new_note(notes):
     while True:
@@ -353,99 +440,53 @@ def show_notes(notes):
         return "No notes added."
     
 
-
-
-
-@input_error
-def find(args, book):
-    print(f"шукати {args}")
-    arg = args[0]
-    if is_looks_date(arg):    # якщо arg схожий на дату
-        print(f"Функція буде шукати date {arg}")
-        for record in book.values():
-            print("record", record)
-    #   record виводить 
-            if record.birthday:
-                print(record.birthday, record.birthday.value, arg, Birthday(arg))
-                print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
-                if Birthday(arg) == record.birthday:
-                    print(True)
-# Треба порівняти birthday з arg і вивести records де це співпадає
-
-
-
-    elif is_looks_phone(arg):
-        print(f"Функція буде шукати phone {arg}")
-        #book.find_in_field("phone", arg)
-    elif is_looks_email(arg):
-        print(f"Функція буде шукати email {arg}")
-        #book.find_in_field("email", arg)
-    
-    # Address not aveilable to check:
-        
-    # name
-
-    else:
-        return "Contact does not exist."
-
-@input_error
-def edit_address(args, book):
-    name, street, house_number, city, postal_code, country = args
-    if name in book.data:
-        record = book.data[name]
-        record.edit_address(street, house_number, city, postal_code, country)
-        return "Address edited."
-    else:
-        return "Contact does not exist."
-
-@input_error
-def remove_address(args, book):
-    name, = args
-    if name in book.data:
-        record = book.data[name]
-        record.remove_address()
-        return "Address removed."
-    else:
-        return "Contact does not exist."
-
-   
+ 
 def show_commands():
     commands = {
         "help": "for help",
         "hello": "just fo say 'Hi!'",
-
+    #Phone
         "add [name] [phone]": "add new contact",
-        "change [name] [phone]": "change person phone number",
         "phone [name]": "get person phone numbers",
+        "change [name] [phone]": "change person phone number",
+    #Birthday
         "add-birthday [name]": "add person birthday",
         "show-birthday [name]": "get person birthday",
         "change-birthday [name]": "change person birthday",
-        "birthdays": "get persons with birtday next week ",
+        "delete-birthday [name]": "delete person birthday",
+        "birthdays": "get all persons with birtday next week ",
         "birthdays [days]": "get birtdays list for next custom amount of days",
+    #Email
+        "add-email [name]": "add person email",
+        "show-email [name]": "get person email",
+        "change-email [name]": "change person email",
+        "delete-email [name]": "delete person email",
+
+   
+    #Address
+        "add-address name street house_number city postal_code country": "for add an address to a contact",
+        #"show-address name"
+        "remove-address name index": "for remove an address from a contact by its index",  
+        "edit-address name index [street] [house_number] [city] [postal_code] [country]": "for edit an address of a contact",
+        "remove-address name index": "for remove an address from a contact by its index",
+    #Notes
+        
+    
+
+    #all
         "delete [name]": "delete contact",
         "delete [name] phones": "delete person phones",
         "delete [name] birthday": "delete person birthday",
         "delete [name] email": "delete person email",
         "delete [name] address": "delete person address",
-        "delete [name] notes": "delete person notes",       
-
-        "add name phone": "for add new contact",
-        "change name phone": "for change exist contact",
-        "phone name": "for get phone number",
-        "add-birthday name": "for add birthday",
-        "show_birthday name": "for get birthday",
-        "add-address name street house_number city postal_code country": "for add an address to a contact",
-        "remove-address name index": "for remove an address from a contact by its index",
-        "edit-address name index [street] [house_number] [city] [postal_code] [country]": "for edit an address of a contact",
-        "remove-address name index": "for remove an address from a contact by its index",
-        "birthdays": "for get birtdays next week ",
+        "delete [name] notes": "delete person notes",    
         "all": "for get all contact list",
         "exit": "for exit",
     }
 
     res = []
     for command, desctiption in commands.items():
-        res.append("{:<19} {} ".format(command, desctiption))
+        res.append("    {:<25}  ==>  {} ".format(command, desctiption))
     return "\n".join(res)
 
 def new_note(notes):
@@ -504,6 +545,67 @@ def find_note(notes):
         else:
             print(f"Must be the number between 1 and {len(notes)}")
             continue
+
+
+
+@input_error
+def find(args, book):
+    print(f"шукати {args}")
+    arg = args[0]
+    if is_looks_date(arg):    # якщо arg схожий на дату
+        print(f"Функція буде шукати date {arg}")
+        for record in book.values():
+            print("record", record)
+    #   record виводить 
+            if record.birthday:
+                print(record.birthday, record.birthday.value, arg, Birthday(arg))
+                print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
+                if Birthday(arg) == record.birthday:
+                    print(True)
+# Треба порівняти birthday з arg і вивести records де це співпадає
+
+
+
+    elif is_looks_phone(arg):
+        print(f"Функція буде шукати phone {arg}")
+        #book.find_in_field("phone", arg)
+    elif is_looks_email(arg):
+        print(f"Функція буде шукати email {arg}")
+        #book.find_in_field("email", arg)
+    
+    # Address not aveilable to check:
+        
+    # name
+
+    else:
+        return "Contact does not exist."
+
+@input_error
+def delete(args, book):
+    if len(args) == 1:      # if in args 1 arg
+       arg = args[0]        # get arg from []
+       res = book.delete(arg)
+       return res
+    elif len(args) == 2:
+        name, field = args
+        record = book.find(name)
+        if field == 'phones':
+            res = record.remove_phones()
+            return res
+        elif field == 'birthday':
+            res = record.remove_birthday()
+            return res
+        elif field == 'email':
+            res = record.remove_email()
+            return res
+        elif field == 'address':
+            res = record.remove_address()
+            return res
+        elif field == 'notes':
+            res = record.remove_notes()
+            return res
+
+
 
 def show_notes(notes):
     if notes:
