@@ -6,6 +6,8 @@ from src.services import *
 
 from src.disk import save_to_json, load_from_json
 
+ature/serialization
+=======
 command_keywords = {
     "add": ["додати", "new", "new contact"],
     "delete": ["видалити", "remove"],
@@ -47,16 +49,13 @@ def guess_command(user_input):
 
 
 
+
 def main():
     # book = AddressBook()
     # print(book)
-    notes = []
-    try:
-        book = load_from_json()
-        #print("main load", book)
-    except:
-        book = AddressBook()
-        #print("main new", book)
+    book, notes = load_from_json()
+    # print("main load", book)
+    # print("main new", book)
 
     print("Welcome to the assistant bot!")
     # Після визначення функції main() і перед while True:
@@ -76,27 +75,27 @@ def main():
             command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "good bye"]:
-            save_to_json(book)
+            save_to_json(book, notes)
             print(colored("Good bye!", 'cyan', attrs=['bold']))
             break
         elif command == "hello":
             print(colored("How can I help you?", 'white', 'on_blue', attrs=['bold']))
         elif command == "help":
             print(show_commands())
-# All
+        # All
         elif command == "all":
-            print(show_all(book))#
+            print(show_all(book))  #
         elif command == "delete":
             print(delete(args, book))
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
-# Find  
+        # Find
         elif command == "find-contact":
             print(find_contacts(args, book))
-        
 
 #Phone
+
         elif command == "add":
             if len(args) >= 2:
                 response = add_contact(args, book) 
@@ -104,11 +103,11 @@ def main():
             else:
                 print(colored("Error: 'add' command requires a name and a phone number.", 'red'))
         elif command == "phone":
-            print(show_phone(args, book))#
+            print(show_phone(args, book))  #
         elif command == "change":
             print(change_contact(args, book))
 
-#Birthday
+        # Birthday
         elif command == "add-birthday":
             print(colored(add_birthday(args, book), 'green', attrs=['bold']))
         elif command == "show-birthday":
@@ -116,23 +115,26 @@ def main():
         elif command == "change-birthday":
             print(change_birthday(args, book))
         elif command == "delete-birthday":
-            print(delete_birthday(args, book))       
+            print(delete_birthday(args, book))
         elif command == "birthdays":
             birthdays(args, book)
-#Email
+            
+        # Email
         elif command == "add-email":
             print(colored(add_email(args, book), 'cyan', attrs=['bold']))
         elif command == "email": 
+
             print(show_email(args, book))
         elif command == "delete-email":
             print(colored(delete_email(args, book), 'red', attrs=['bold']))
 
-#Address
+        # Address
         elif command == "add-address":
             print(colored(add_address(args, book), 'green', attrs=['bold']))
         elif command == "change-address":
             print(edit_address(args, book))
         elif command == "show-address":
+
             print(show_address(args,book))
         elif command == "delete-address":
             print(colored(remove_address(args, book), 'red', attrs=['bold']))
@@ -145,13 +147,13 @@ def main():
             print(colored(delete_note(notes), 'red'), attrs=['bold'])
         elif command == "show-notes":
             print(show_notes(notes))
-            print('=' * 50)
+            print("=" * 50)
 
         else:
             print('Invalid command. Enter "help" for help')
+
 
 if __name__ == "__main__":
     main()
 
 # Comment
-    
