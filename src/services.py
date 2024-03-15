@@ -1,8 +1,8 @@
-from src.classes import Record, Birthday, AddressBook, Email, Note
+from src.classes import Record, Birthday, AddressBook, Email, Phone, Note, Note
 from src.check import *
-# from datetime import datetime
+from datetime import datetime
 from src.classes import Record
-#from collections import defaultdict
+from collections import defaultdict
 from re import fullmatch
 
 def input_error(func):
@@ -87,7 +87,6 @@ def change_contact(args, book):
         return f"Contact {name} updated."
     else:
         return f"Sorry, {name} not found."
-
 
 def get_phones(record):   # Service for get phones from record
     res = []
@@ -269,6 +268,55 @@ def get_emails(record):
     else:
         return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
 
+# "add-email name email": "adding email to existing contact"
+@input_error
+def add_email(args, book):
+    """
+    Function to add an email to a contact record.
+
+    Args:
+        args (tuple): A tuple containing the name (str) and email (str) to add.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A confirmation message of adding the email.
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, email = args
+    if name in book:
+        record = book[name]
+        record.emails.append(Email(email))
+        return f"{name}'s email added"
+    else:
+        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+
+# "email name": "get email of specific contact"
+@input_error
+def show_email(args, book):
+    """
+    Function to get the email of a specific contact.
+
+    Args:
+        args (tuple): A tuple containing the name (str) of the contact.
+        book (dict): A dictionary representing the address book.
+
+    Returns:
+        str: A string containing the contact's name and their email(s).
+    
+    Raises:
+        ValueError: If the input arguments are not in the correct format.
+    """
+    name, = args
+    if name in book:
+        record = book[name]
+        res = []
+        for email in record.emails:
+            res.append(email.value)
+        return f"{name}: {','.join(res)}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
 
 def add_email(args, book):
     """
@@ -503,11 +551,17 @@ def show_commands():
         "birthdays": "get all persons with birtday next week ",
         "birthdays [days]": "get birtdays list for next custom amount of days",
     #Email
-        "add-email [name]": "add person email",
-        "show-email [name]": "get person email",
-        "change-email [name]": "change person email",
-        "delete-email [name]": "delete person email",
+
+        "add-email [name] [email]": "add email to existing contact",
+        "delete-email [name] [email]": "delete existing email of specific contact",
+        "email [name]": "get emails of person",
+
+#         "add-email [name]": "add person email",
+#         "show-email [name]": "get person email",
+#         "change-email [name]": "change person email",
+#         "delete-email [name]": "delete person email",
    
+
     #Address
         "add-address [name] [street] [house_number] [city] [postal_code] [country]": "add",
         "edit-address [name] [street] [house_number] [city] [postal_code] [country]": "edit",
@@ -590,3 +644,4 @@ def delete(args, book):
 #         return "Contact does not exist."
 ###----------------------------------------------------------------------------
         
+
