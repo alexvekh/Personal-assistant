@@ -1,7 +1,7 @@
 from collections import UserDict
 from datetime import datetime
-from src.birthdays import get_birthdays_per_week, get_birthdays_by_days
-from src.validate import name_is_valid, phone_is_valid, date_is_valid, email_is_valid
+from .birthdays import get_birthdays_per_week, get_birthdays_by_days
+from .validate import name_is_valid, phone_is_valid, date_is_valid, email_is_valid
 import re
 
 
