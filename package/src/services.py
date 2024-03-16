@@ -250,7 +250,7 @@ def show_all(book):
         birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "No Birthday"
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
         
-        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\n"
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n"
         res.append(contact_info)
         res.append("{:-^60}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
