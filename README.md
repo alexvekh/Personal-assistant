@@ -16,7 +16,7 @@ Error Handling: Gracefully handle incorrect or missing commands, providing helpf
 
 2. Dependencies: The program relies on certain external libraries. Install them using pip:
 
-```bash
+```Bash
 pip install -r requirements.txt
 ```
 
