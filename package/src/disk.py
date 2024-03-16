@@ -1,5 +1,5 @@
 import json
-from src.classes import AddressBook, Record, Name, Birthday, Phone, Email, Address, Note
+from .classes import AddressBook, Record, Name, Birthday, Phone, Email, Address, Note
 from datetime import datetime
 
 file = "package/src/data.json"
