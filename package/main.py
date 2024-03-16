@@ -142,7 +142,7 @@ def main():
             print(colored(remove_address(args, book), 'red', attrs=['bold']))
 # Note
         elif command == "add-note":
-            print(colored(show_notes(notes), 'green', attrs=['bold']))
+            print(colored(new_note(notes), 'green', attrs=['bold']))
         elif command == "edit-note":
             print(edit_note(notes))
         elif command == "delete-note":
