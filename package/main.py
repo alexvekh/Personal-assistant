@@ -107,6 +107,8 @@ def main():
             print(colored(add_email(args, book), 'cyan', attrs=['bold']))
         elif command == "email": 
             print(show_email(args, book))
+        elif command == "change-email":
+            print(change_email(args, book))
         elif command == "delete-email":
             print(colored(delete_email(args, book), 'red', attrs=['bold']))
 
@@ -121,7 +123,7 @@ def main():
             print(colored(remove_address(args, book), 'red', attrs=['bold']))
 # Note
         elif command == "add-note":
-            print(colored(show_notes(notes), 'green', attrs=['bold']))
+            print(colored(new_note(notes), 'green', attrs=['bold']))
         elif command == "edit-note":
             print(edit_note(notes))
         elif command == "delete-note":
