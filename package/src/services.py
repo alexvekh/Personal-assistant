@@ -15,16 +15,21 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError as e:
-            return f"Error: {e}"
+            return "Wrong format. Use 'help' for additional imformation."
+            #return f"Error: {e}"
         except KeyError:
-            return "Please provide a name."
+            return "Wrong format. Use 'help' for additional imformation."
+            #return "Please provide a name."
         except IndexError as e:
-            return f"Error: {e}"
+            return "Wrong format. Use 'help' for additional imformation."
+            #return f"Error: {e}"
         except NameError as e:
-            return f"Error: {e}"
+            return "Wrong format. Use 'help' for additional imformation."
+            #return f"Error: {e}"
         except TypeError as e:
-            return f"Error: {e}"
-
+            return "Wrong format. Use 'help' for additional imformation."
+            #return f"Error: {e}"
+            
     return inner
 
 
