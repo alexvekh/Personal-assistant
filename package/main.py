@@ -9,6 +9,7 @@ except ModuleNotFoundError:
 from termcolor import colored
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.formatted_text import HTML
 
 class FirstWordCompleter(Completer):
     def __init__(self, word_list):
@@ -54,23 +55,24 @@ def main():
     session = PromptSession(completer=FirstWordCompleter(commands))
     # Після визначення функції main() і перед while True:
     while True:
-        user_input = session.prompt("Enter a command ===> ").strip()
+        user_input = session.prompt(HTML('<ansigreen>Enter a command ===></ansigreen> ')).strip()
         parts = user_input.split(' ', 1)
         command = parts[0].lower()
         args = parts[1].split() if len(parts) > 1 else []
         if command in ["close", "exit", "good bye"]:
             save_to_json(book,notes)
-            print(colored("Good bye!", 'cyan', attrs=['bold']))
+            print(colored("Good bye!", 'blue', 'on_light_green', attrs=['bold']))
             break
         elif command == "hello":
-            print(colored("How can I help you?", 'white', 'on_blue', attrs=['bold']))
+            print(colored("How can I help you?", 'blue', 'on_light_green', attrs=['bold']))
         elif command == "help":
             print(show_commands())
 # All
         elif command == "all":
             print(show_all(book))#
         elif command == "delete":
-            print(delete(args, book))
+            response = delete(args, book)
+            print(colored(f"❌ {response}", 'red', attrs=['bold']))
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
@@ -93,18 +95,20 @@ def main():
 
 #Birthday
         elif command == "add-birthday":
-            print(colored(add_birthday(args, book), 'green', attrs=['bold']))
+            response = add_birthday(args, book) 
+            print(colored("✅ " + response, 'green', attrs=['bold']))
         elif command == "show-birthday":
-            print(show_birthday(args, book),'magenta')
+            birthday_response = show_birthday(args, book)
+            print(colored(f"🎉🎂 {birthday_response}", 'white', 'on_magenta', attrs=['bold']))
         elif command == "change-birthday":
             print(change_birthday(args, book))
         elif command == "delete-birthday":
-            print(delete_birthday(args, book))       
+            print(colored(delete_birthday(args, book), 'red', attrs=['bold']))    
         elif command == "birthdays":
             birthdays(args, book)
 #Email
         elif command == "add-email":
-            print(colored(add_email(args, book), 'cyan', attrs=['bold']))
+            print(colored(add_email(args, book), 'green', attrs=['bold']))
         elif command == "email": 
             print(show_email(args, book))
         elif command == "change-email":
@@ -127,7 +131,8 @@ def main():
         elif command == "edit-note":
             print(edit_note(notes))
         elif command == "delete-note":
-            print(colored(delete_note(notes), 'red'), attrs=['bold'])
+            deleter = (delete_note(notes))
+            print(colored(f"❌ {deleter}", 'red', attrs=['bold']))
         elif command == "show-notes":
             print(show_notes(notes))
             print('=' * 50)
