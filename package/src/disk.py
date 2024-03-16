@@ -2,7 +2,7 @@ import json
 from src.classes import AddressBook, Record, Name, Birthday, Phone, Email, Address, Note
 from datetime import datetime
 
-file = "src/data.json"
+file = "package/src/data.json"
 
 
 def convert_to_json(book, notes):
