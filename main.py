@@ -2,11 +2,23 @@ from src.classes import AddressBook
 from termcolor import colored
 from src.services import *
 from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.completion import Completer, Completion
 # from src.services import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays, show_commands, add_address, edit_address, show_address, remove_address, new_note, edit_note, delete_note, show_notes
 
 from src.disk import save_to_json, load_from_json
 
+class FirstWordCompleter(Completer):
+    def __init__(self, word_list):
+        self.word_list = word_list
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+        word = text.split(' ')[0]  # Беремо лише перше слово
+        
+        if ' ' not in text:
+            for word in self.word_list:
+                if word.startswith(text):
+                    yield Completion(word, start_position=-len(text))
 
 commands = [
     'close', 'exit', 'good bye', 'hello', 'help', 'all', 'delete',
@@ -16,14 +28,14 @@ commands = [
     'show-address', 'delete-address', 'add-note', 'edit-note', 'delete-note',
     'show-notes'
 ]
-command_completer = WordCompleter(commands, ignore_case=True)
+
 
 
 
 
 def main():
     try:
-        result = load_from_json()  # Ensure this function returns a tuple of (book, notes)
+        result = load_from_json()  
         if isinstance(result, tuple) and len(result) == 2:
             book, notes = result
         else:
@@ -31,12 +43,12 @@ def main():
             notes = []
     except Exception as e:
         print(f"Failed to load data: {e}")
-        book = AddressBook()  # Initialize your AddressBook here
+        book = AddressBook()  
         notes = []
 
 
     print("Welcome to the assistant bot!")
-    session = PromptSession(completer=command_completer)
+    session = PromptSession(completer=FirstWordCompleter(commands))
     # Після визначення функції main() і перед while True:
     while True:
         user_input = session.prompt("Enter a command ===> ").strip()
