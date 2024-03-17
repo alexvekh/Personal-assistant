@@ -237,14 +237,6 @@ def get_phones(record):  # Service for get phones from record
 
 @input_error
 def show_all(book):
-# ============= was table format ==============================================
-#     res = []
-#     res.append("{:^20}".format("CONTACTS"))
-#     res.append("{:^20}".format("-" * 10))
-#     for name, record in book.items():
-#         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
-#     res.append("{:^20}".format("=" * 20))
-# =============================================================================
     res = ["{:^60}".format("CONTACTS"), "{:-^60}".format("")]
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
@@ -268,17 +260,16 @@ def show_table(book):
 #         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
 #     res.append("{:^20}".format("=" * 20))
 # =============================================================================
-    res = ["{:^60}".format("CONTACTS"), "{:-^60}".format("")]
+    res = ["{:^60}".format("CONTACTS"), "{:-^146}".format("")]
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
         phones = ", ".join(phone.value for phone in record.phones) or "No Phone"
         birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "No Birthday"
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
         money = book[name].money
-        
-        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n💰 Money: {money} dollars"
+        contact_info = "👤 {:<12} 📞 {:<20} 📧 {:<27} 🎂 {:<15} 🏠 {:<45} 💰 {:<6}".format(name, phones, emails, birthday, addresses, money)
         res.append(contact_info)
-        res.append("{:-^60}".format(""))  # Додав розділювач між контактами
+        res.append("{:-^146}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
 
 # Find contact info by name ------------------------------------------------
@@ -779,32 +770,5 @@ def delete(args, book):
             return res
 
 
-## --------- Не стирать, колись продовжу --------------------------------
-# @input_error
-# def find(args, book):
-#     print(f"шукати {args}")
-#     arg = args[0]
-#     if is_looks_date(arg):    # якщо arg схожий на дату
-#         print(f"Функція буде шукати date {arg}")
-#         for record in book.values():
-#             print("record", record)
-#     #   record виводить
-#             if record.birthday:
-#                 print(record.birthday, record.birthday.value, arg, Birthday(arg))
-#                 print(type(record.birthday), type(record.birthday.value), type(arg), type(Birthday(arg)))
-#                 if Birthday(arg) == record.birthday:
-#                     print(True)
-# # Треба порівняти birthday з arg і вивести records де це співпада
-#     elif is_looks_phone(arg):
-#         print(f"Функція буде шукати phone {arg}")
-#         #book.find_in_field("phone", arg)
-#     elif is_looks_email(arg):
-#         print(f"Функція буде шукати email {arg}")
-#         #book.find_in_field("email", arg)
-#     # Address not aveilable to check:
-#     # name
-#     else:
-#         return "Contact does not exist."
 
-###----------------------------------------------------------------------------
 
