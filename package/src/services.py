@@ -72,7 +72,7 @@ def show_phone(args, book):
             res.append(phone.value)
         return f"{name}: {','.join(res)}"
     else:
-        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+        return "Sorry, {name} doesn't exist. Use 'add' to append this contact."
 
 
 @input_error
@@ -250,7 +250,7 @@ def show_all(book):
         birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "No Birthday"
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
         
-        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\n"
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n"
         res.append(contact_info)
         res.append("{:-^60}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
@@ -279,7 +279,7 @@ def add_birthday(args, book):
         record.add_birthday(birthday)
         return f"{name}'s birthday added"
     else:
-        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+        return f"Sorry, {name} doesn't exist. Use 'add' to add this contact."
 
 
 @input_error
@@ -293,7 +293,7 @@ def show_birthday(args, book):
         else:
             return f"{name}'s birthday isn't recorded"
     else:
-        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
+        return "Sorry, {name} doesn't exist. \nUse 'add' to add this contact to book."
 
 @input_error
 def change_birthday(args, book):
@@ -316,7 +316,7 @@ def delete_birthday(args, book):
         else:
             return f"No birthday for {name}"
     else:
-        return "Sorry, {name} isn't exist. \nUse 'add' for add this contact to book."
+        return "Sorry, {name} doesn't exist. \nUse 'add' to add this contact to book."
 
 @input_error
 def birthdays(args, book):
@@ -343,7 +343,7 @@ def get_emails(record):
     if res:
         return ",".join(res)
     else:
-        return "Sorry, {name} doesn't exist. Use 'add' for append this contact."
+        return "Sorry, {name} doesn't exist. Use 'add' to append this contact."
 
 
 # "add-email name email": "adding email to existing contact"
@@ -368,7 +368,7 @@ def add_email(args, book):
         record.emails.append(Email(email))
         return f"{name}'s email added"
     else:
-        return f"Sorry, {name} isn't exist. Use 'add' for add this contact."
+        return f"Sorry, {name} doesn't exist. Use 'add' to add this contact."
 
 # "email name": "get email of specific contact"
 @input_error
@@ -397,7 +397,7 @@ def show_email(args, book):
         return f"{name}: {','.join(res)}"
     else:
 
-        return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
+        return f"Sorry, {name} doesn't exist. Use 'add' to append this contact."
 
 @input_error
 def change_email(args, book):
@@ -448,7 +448,7 @@ def delete_email(args, book):
                 return f"Email {email_to_delete} deleted from {name}'s contacts."
         return f"Email {email_to_delete} not found in {name}'s contacts."
     else:
-        return f"Sorry, {name} isn't exist. Use 'add' for append this contact."
+        return f"Sorry, {name} doesn't exist. Use 'add' to append this contact."
 
 
 # Address -----------------------------------------------------------------
@@ -631,55 +631,51 @@ def show_notes(notes):
 
 
 def show_commands():
-    commands = {
-        "help": "for help",
-        "hello": "just fo say 'Hi!'",
-        # Phone
-        "add [name] [phone]": "add new contact",
-        "phone [name]": "get person phone numbers",
-        "change [name] [phone]": "change person phone number",
-        # Birthday
-        "add-birthday [name]": "add person birthday",
-        "show-birthday [name]": "get person birthday",
-        "change-birthday [name]": "change person birthday",
-        "delete-birthday [name]": "delete person birthday",
-        "birthdays": "get all persons with birtday next week ",
-        "birthdays [days]": "get birtdays list for next custom amount of days",
-        # Email
-        "add-email [name] [email]": "add email to existing contact",
-        "delete-email [name] [email]": "delete existing email of specific contact",
-        "email [name]": "get emails of person",
-        "find [name]": "find contact by name: displays all contact's information",
-        #         "add-email [name]": "add person email",
-        #         "show-email [name]": "get person email",
-        #         "change-email [name]": "change person email",
-        #         "delete-email [name]": "delete person email",
-        # Address
-        "add-address [name] [street] [house_number] [city] [postal_code] [country]": "add",
-        "edit-address [name] [street] [house_number] [city] [postal_code] [country]": "edit",
-        "show-address [name]": "show person address",
-        "remove-address [name]": "remove an address from a contact by its index",
-        # Note
-        "add-note [name]": "add person note",
-        "show-note [name]": "get person note",
-        "change-note [name]": "change person note",
-        "delete-note [name]": "delete person note",
-        # all
-        "delete [name]": "delete contact",
-        "delete [name] phones": "delete person phones",
-        "delete [name] birthday": "delete person birthday",
-        "delete [name] email": "delete person email",
-        "delete [name] address": "delete person address",
-        "delete [name] notes": "delete person notes",
-        "all": "for get all contact list",
-        "exit": "for exit",
+   
+    groups = {
+        "General Commands": {
+            "help": "Display all available commands.",
+            "exit": "Exit the program."
+        },
+        "Contact Management": {
+            "add [name] [phone]": "Add a new contact.",
+            "delete [name]": "Delete an existing contact.",
+            "change [name] [existing phone][new phone]": "Change the phone number of an existing contact.",
+            "all": "Display all contacts."
+        },
+        "Phone Management": {
+            "phone [name]": "Display the phone number of a specific contact."
+        },
+        "Birthday Management": {
+            "add-birthday [name] [birthday]": "Add a birthday for a contact.",
+            "show-birthday [name]": "Show the birthday of a specific contact.",
+            "change-birthday [name] [new birthday]": "Change birthday for your contact",
+            "delete-birthday [name]": "Delete a contact's birthday."
+        },
+        "Email Management": {
+            "add-email [name] [email]": "Add an email to a contact.",
+            "email [name]": "Show the email of a specific contact.",
+            "change-email [name]": "Update your contact's email.",
+            "delete-email [name]": "Remove an email from a contact."
+        },
+        "Address Management": {
+            "add-address [name] [street] [house_number] [city] [postal_code] [country]": "Add an address to a contact.",
+            "change-address [name] [new details]": "Edit an existing address.",
+            "show-address [name]": "Display the address of a specific contact.",
+            "delete-address [name]": "Delete an address from a contact."
+        },
+        "Note Management": {
+            "add-note": "Add a note to a contact.",
+            "show-notes": "Display notes all or specific note.",
+            "edit-note": "Edit an already existing note.",
+            "delete-note": "Remove a note."
+        }
     }
 
-    res = []
-    for command, desctiption in commands.items():
-        res.append("    {:<25}  ==>  {} ".format(command, desctiption))
-    return "\n".join(res)
-
+    for group_name, commands in groups.items():
+        print(f"\n{group_name}:")
+        for command, description in commands.items():
+            print(f"  {command:40} - {description}")
 
 @input_error
 def delete(args, book):
