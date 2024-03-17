@@ -249,8 +249,9 @@ def show_all(book):
         phones = ", ".join(phone.value for phone in record.phones) or "No Phone"
         birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "No Birthday"
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
+        money = book[name].money
         
-        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n"
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\nMoney: {money} dollars"
         res.append(contact_info)
         res.append("{:-^60}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
@@ -264,8 +265,9 @@ def find(args, book):
         phones = ", ".join(phone.value for phone in book[name].phones) or "No Phone"
         birthday = book[name].birthday.value.strftime('%d.%m.%Y') if book[name].birthday else "No Birthday"
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in book[name].addresses) or "No Address"
+        money = book[name].money
         
-        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\n"
+        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\nMoney: {money} dollars"
         return contact_info
     else:
         return f"Contact {name} not found"
@@ -629,6 +631,48 @@ def show_notes(notes):
     else:
         return "No notes added."
 
+# Money -----------------------------------------------------------------------------
+@input_error
+def deposit(args, book):
+    name, amount = args
+    if name in book:
+        if amount.isdigit() and int(amount) > 0:
+            amount = int(amount)
+            record = book[name]
+            record.deposit(amount)
+            return "Deposit successful."
+        else:
+            return "Invalid amount."
+    else:
+        return "No such contact."
+    
+@input_error
+def withdraw(args, book):
+    name, amount = args
+    if name in book:
+        if amount.isdigit() and int(amount) > 0:
+            amount = int(amount)
+            record = book[name]
+            if record.money >= amount:
+                record.withdraw(amount)
+                return "Withdraw successful."
+            else:
+                return "You cannot withdraw more than you have."
+        else:
+            return "Invalid amount."
+    else:
+        return "No such contact."
+@input_error
+def get_money(args, book):
+    name = args[0]
+    if name in book:
+        return f"{name} has {book[name].money} dollars."
+    else:
+        return "No such contact."
+    
+def bank(book):
+    return sum(book[name].money for name in book)
+        
 
 def show_commands():
    
@@ -669,8 +713,14 @@ def show_commands():
             "show-notes": "Display notes all or specific note.",
             "edit-note": "Edit an already existing note.",
             "delete-note": "Remove a note."
+        },
+        "Money Management": {
+        "deposit [name] [amount]": "deposit to person`s wallet",
+        "withdraw [name] [amount]": "withdraw from person`s wallet",
+        "money [name]": "show current person`s wallet balance",
+        "bank": "show sum of all wallets"
         }
-    }
+        }
 
     for group_name, commands in groups.items():
         print(f"\n{group_name}:")

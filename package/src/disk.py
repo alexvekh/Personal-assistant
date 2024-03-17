@@ -19,6 +19,7 @@ def convert_to_json(book, notes):
                 ),
                 "emails": [email.value for email in record.emails],
                 "addresses": [str(address) for address in record.addresses],
+                "money": record.money
             }
         )
     for note in notes:
@@ -60,12 +61,15 @@ def load_from_json():
             ]
 
             birthday = Birthday(contact["birthday"]) if contact["birthday"] else None
+            
+            money = int(contact["money"])
 
             record = Record(name)
             record.phones = phone_list
             record.birthday = birthday
             record.emails = email_list
             record.addresses = addresses
+            record.money = money
 
             book.add_record(record)
 
