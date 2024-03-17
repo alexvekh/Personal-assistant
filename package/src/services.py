@@ -2,7 +2,7 @@ from .classes import Record, Birthday, AddressBook, Email, Phone, Note, Note
 from .check import *
 from .classes import Record
 from .validate import email_is_valid
-
+from termcolor import colored
 from datetime import datetime
 from collections import defaultdict
 from re import fullmatch
@@ -55,11 +55,12 @@ def add_contact(args, book):
     """
     name, phone = args
     if len(phone) != 10 or not phone.isdigit():
-        return "Error: Invalid phone number format. Please enter a 10-digit number."
+        return colored("Error: Invalid phone number format. Please enter a 10-digit number.", 'red', attrs=['bold'])
+    
     record = Record(name)
     record.add_phone(phone)
     book[name] = record
-    return "Contact added."
+    return colored("✅ Contact added.", 'green', attrs=['bold'])
 
 
 def show_phone(args, book):
@@ -72,7 +73,7 @@ def show_phone(args, book):
             res.append(phone.value)
         return f"{name}: {','.join(res)}"
     else:
-        return "Sorry, {name} doesn't exist. Use 'add' to append this contact."
+        return colored("Sorry, {name} doesn't exist. Use 'add' to append this contact.", 'red', attrs=['bold'])
 
 
 @input_error
@@ -98,9 +99,10 @@ def change_contact(args, book):
             record.emails = [Email(new_value)]
         elif field == "note":
             record.note = new_value
-        return f"Contact {name} updated."
+        return colored(f"\U0001F4DD Contact {name} updated.", 'cyan', attrs=['bold'])
     else:
-        return f"Sorry, {name} not found."
+        return colored(f"\U000026D4 Sorry, {name} not found.", 'red', attrs=['bold'])
+
 
 
 def get_phones(record):  # Service for get phones from record
@@ -110,7 +112,7 @@ def get_phones(record):  # Service for get phones from record
     if res[0]:
         return ",".join(res)
     else:
-        return "No phone"
+       return colored("📵 No phone", 'yellow', attrs=['bold'])
 
 
 # # Find ----------------------------------------------------------------
@@ -251,7 +253,7 @@ def show_all(book):
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in record.addresses) or "No Address"
         money = book[name].money
         
-        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\nMoney: {money} dollars"
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n💰 Money: {money} dollars"
         res.append(contact_info)
         res.append("{:-^60}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
@@ -270,7 +272,7 @@ def find(args, book):
         contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\nMoney: {money} dollars"
         return contact_info
     else:
-        return f"Contact {name} not found"
+        return colored(f"\U000026D4 Contact {name}  not found.", 'red', attrs=['bold'])
 
 # Birthday ----------------------------------------------------------------
 @input_error
@@ -279,9 +281,9 @@ def add_birthday(args, book):
     if name in book:
         record = book[name]
         record.add_birthday(birthday)
-        return f"{name}'s birthday added"
+        return colored(f"🎉 {name}'s birthday added", 'green', attrs=['bold'])
     else:
-        return f"Sorry, {name} doesn't exist. Use 'add' to add this contact."
+        return colored(f"❌ Sorry, {name} doesn't exist. Use 'add' to add this contact.", 'red', attrs=['bold'])
 
 
 @input_error
@@ -291,11 +293,11 @@ def show_birthday(args, book):
         record = book[name]
         if record.birthday != None:
             birthday = record.birthday.value.strftime("%d.%m.%Y")
-            return f"{name}'s birthday is {birthday}"
+            return colored(f"🎂 {name}'s birthday is {birthday}", 'cyan', attrs=['bold'])
         else:
-            return f"{name}'s birthday isn't recorded"
+            return colored(f"❓ {name}'s birthday isn't recorded", 'yellow', attrs=['bold'])
     else:
-        return "Sorry, {name} doesn't exist. \nUse 'add' to add this contact to book."
+        return colored(f"❌ Sorry, {name} doesn't exist. \nUse 'add' to add this contact to the book.", 'red', attrs=['bold'])
 
 @input_error
 def change_birthday(args, book):
@@ -303,9 +305,9 @@ def change_birthday(args, book):
     if name in book:
         record = book[name]
         record.add_birthday(birthday)
-        return f"{name}'s birthday changed"
+        return colored(f"🔄 {name}'s birthday changed", 'green', attrs=['bold'])
     else:
-        return f"Sorry, {name} isn't exist."
+        return colored(f"❌ Sorry, {name} doesn't exist.", 'red', attrs=['bold'])
 
 @input_error
 def delete_birthday(args, book):
@@ -316,9 +318,9 @@ def delete_birthday(args, book):
             res = record.remove_birthday()
             return res
         else:
-            return f"No birthday for {name}"
+            return colored(f"🚫 No birthday for {name}", 'yellow', attrs=['bold'])
     else:
-        return "Sorry, {name} doesn't exist. \nUse 'add' to add this contact to book."
+        return colored(f"❌ Sorry, {name} doesn't exist. \nUse 'add' to add this contact to book.", 'red', attrs=['bold'])
 
 @input_error
 def birthdays(args, book):
@@ -345,7 +347,7 @@ def get_emails(record):
     if res:
         return ",".join(res)
     else:
-        return "Sorry, {name} doesn't exist. Use 'add' to append this contact."
+        return "Sorry, {name} doesn't exist. Use 'add' to append this contact." 
 
 
 # "add-email name email": "adding email to existing contact"
@@ -368,9 +370,9 @@ def add_email(args, book):
     if name in book:
         record = book[name]
         record.emails.append(Email(email))
-        return f"{name}'s email added"
+        return colored(f"✅ {name}'s email added successfully", 'green', attrs=['bold'])
     else:
-        return f"Sorry, {name} doesn't exist. Use 'add' to add this contact."
+        return colored(f"❌ Sorry, {name} doesn't exist. \nUse 'add' to add this contact to the book.", 'red', attrs=['bold'])
 
 # "email name": "get email of specific contact"
 @input_error
@@ -399,8 +401,8 @@ def show_email(args, book):
         return f"{name}: {','.join(res)}"
     else:
 
-        return f"Sorry, {name} doesn't exist. Use 'add' to append this contact."
-
+        return colored(f"❌ Sorry, {name} doesn't exist. \nUse 'add' to add this contact to the book.", 'red', attrs=['bold'])
+    
 @input_error
 def change_email(args, book):
     name = args[0]
@@ -415,15 +417,15 @@ def change_email(args, book):
                         new_email = input("Enter new email ==>  ")
                         if email_is_valid(new_email):
                             book[name].emails[int(answer)-1] = Email(new_email)
-                            return "Email has been changed."
+                            return colored("Email has been changed.", 'green', attrs=['bold'])
                         else:
-                            print("Seems like this email is incorrect. Try again.")
+                            print(colored("Seems like this email is incorrect. Try again.", 'red'))
                 else:
-                    print("Must be the number between 1 and " + str(len(book[name].emails)))
+                    print(colored(f"Must be the number between 1 and {len(book[name].emails)}", 'red'))
         else:
-            return "Contact has no emails."
+            return colored("Contact has no emails.", 'red')
     else:
-        return "No such contact."
+        return colored("No such contact.", 'red')
 
 # "change-email name email": "changing email of existing contact"
 @input_error
@@ -447,10 +449,10 @@ def delete_email(args, book):
         for email in record.emails:
             if email.value == email_to_delete:
                 record.emails.remove(email)
-                return f"Email {email_to_delete} deleted from {name}'s contacts."
-        return f"Email {email_to_delete} not found in {name}'s contacts."
+                return colored(f"🗑️ Email {email_to_delete} deleted from {name}'s contacts.", 'green', attrs=['bold'])
+        return colored(f"🔍 Email {email_to_delete} not found in {name}'s contacts.", 'yellow', attrs=['bold'])
     else:
-        return f"Sorry, {name} doesn't exist. Use 'add' to append this contact."
+         print(colored(f"🚫 Sorry, {name} doesn't exist. Use 'add' to append this contact.", 'red', attrs=['bold']))
 
 
 # Address -----------------------------------------------------------------
@@ -460,9 +462,9 @@ def add_address(args, book):
     if name in book.data:
         record = book.data[name]
         record.add_address(street, house_number, city, postal_code, country)
-        return "Address added."
+        return colored("🏠 Address added.", 'green', attrs=['bold'])
     else:
-        return "Contact does not exist."
+        return colored("🚫 Contact does not exist.", 'red', attrs=['bold'])
 
 
 @input_error
@@ -473,12 +475,12 @@ def show_address(args, book):
         addresses = record.addresses
         if addresses:
             address_str = "\n".join([f"{address}" for address in addresses])
-            return f"Addresses for {name}:\n{address_str}"
+            return colored(f"🏠 Addresses for {name}:\n{address_str}", 'blue', attrs=['bold'])
         else:
-            return f"No addresses found for {name}."
+            return colored(f"❌ No addresses found for {name}.", 'red')
 
     else:
-        return "Contact does not exist."
+        return colored("❌ Contact does not exist.", 'red')
 
 
 def edit_address(args, book):
@@ -486,9 +488,9 @@ def edit_address(args, book):
     if name in book.data:
         record = book.data[name]
         record.edit_address(street, house_number, city, postal_code, country)
-        return "Address edited."
+        return colored("Address edited.", 'green', attrs=['bold'])
     else:
-        return "Contact does not exist."
+        return colored("❌ Contact does not exist.", 'red')
 
 
 def remove_address(args, book):
@@ -496,9 +498,9 @@ def remove_address(args, book):
     if name in book.data:
         record = book.data[name]
         record.remove_address()
-        return "Address removed."
+        return colored("🗑️ Address removed.", 'yellow', attrs=['bold'])
     else:
-        return "Contact does not exist."
+        return colored("❌ Contact does not exist.", 'red')
 
 
 # Note --------------------------------------------------------------------

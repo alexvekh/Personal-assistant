@@ -71,8 +71,7 @@ def main():
         elif command == "all":
             print(show_all(book))#
         elif command == "delete":
-            response = delete(args, book)
-            print(colored(f"❌ {response}", 'red', attrs=['bold']))
+            print(delete(args, book))
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
@@ -83,11 +82,7 @@ def main():
 
 #Phone
         elif command == "add":
-            if len(args) >= 2:
-                response = add_contact(args, book) 
-                print(colored("✅ " + response, 'green', attrs=['bold']))
-            else:
-                print(colored("Error: 'add' command requires a name and a phone number.", 'red'))
+            print(add_contact(args, book)) 
         elif command == "phone":
             print(show_phone(args, book))#
         elif command == "change":
@@ -95,44 +90,41 @@ def main():
 
 #Birthday
         elif command == "add-birthday":
-            response = add_birthday(args, book) 
-            print(colored("✅ " + response, 'green', attrs=['bold']))
+            print(add_birthday(args, book))
         elif command == "show-birthday":
-            birthday_response = show_birthday(args, book)
-            print(colored(f"🎉🎂 {birthday_response}", 'white', 'on_magenta', attrs=['bold']))
+            print(show_birthday(args, book))
         elif command == "change-birthday":
             print(change_birthday(args, book))
         elif command == "delete-birthday":
-            print(colored(delete_birthday(args, book), 'red', attrs=['bold']))    
+            print(delete_birthday(args, book))    
         elif command == "birthdays":
             birthdays(args, book)
 #Email
         elif command == "add-email":
-            print(colored(add_email(args, book), 'green', attrs=['bold']))
+            print(add_email(args, book))
         elif command == "email": 
             print(show_email(args, book))
         elif command == "change-email":
             print(change_email(args, book))
         elif command == "delete-email":
-            print(colored(delete_email(args, book), 'red', attrs=['bold']))
+            print(delete_email(args, book))
 
 #Address
         elif command == "add-address":
-            print(colored(add_address(args, book), 'green', attrs=['bold']))
+            print(add_address(args, book))
         elif command == "change-address":
             print(edit_address(args, book))
         elif command == "show-address":
             print(show_address(args, book))
         elif command == "delete-address":
-            print(colored(remove_address(args, book), 'red', attrs=['bold']))
+            print(remove_address(args, book))
         # Note
         elif command == "add-note":
-            print(colored(new_note(notes), 'green', attrs=['bold']))
+            print(new_note(notes))
         elif command == "edit-note":
             print(edit_note(notes))
         elif command == "delete-note":
-            deleter = (delete_note(notes))
-            print(colored(f"❌ {deleter}", 'red', attrs=['bold']))
+            print(delete_note(notes))
         elif command == "show-notes":
             print(show_notes(notes))
             print("=" * 50)
