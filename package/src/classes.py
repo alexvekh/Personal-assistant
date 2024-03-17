@@ -89,6 +89,7 @@ class Record:
         self.birthday = None
         self.addresses = []
         self.emails = []
+        self.money = 0
 
     def add_phone(self, value):
         self.phones.append(Phone(value))
@@ -172,6 +173,12 @@ class Record:
 
     def remove_address(self):
         self.addresses = []
+    
+    def deposit(self, amount):
+        self.money += amount
+        
+    def withdraw(self, amount):
+        self.money -= amount
 
 
 class AddressBook(UserDict):

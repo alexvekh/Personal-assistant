@@ -72,8 +72,8 @@ def main():
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
-# Find  
-        elif command == "find-contact":
+# Find  c
+        elif command == "find-contactj":
             print(find(args, book))
         
 
@@ -118,10 +118,10 @@ def main():
         elif command == "change-address":
             print(edit_address(args, book))
         elif command == "show-address":
-            print(show_address(args,book))
+            print(show_address(args, book))
         elif command == "delete-address":
             print(colored(remove_address(args, book), 'red', attrs=['bold']))
-# Note
+        # Note
         elif command == "add-note":
             print(colored(new_note(notes), 'green', attrs=['bold']))
         elif command == "edit-note":
@@ -131,10 +131,22 @@ def main():
             print(colored(f"❌ {deleter}", 'red', attrs=['bold']))
         elif command == "show-notes":
             print(show_notes(notes))
-            print('=' * 50)
-
+            print("=" * 50)
+   
+        # Money
+        elif command == "deposit":
+            print(deposit(args, book))
+        elif command == "withdraw":
+            print(withdraw(args, book))
+        elif command == "money":
+            print(get_money(args, book))
+        elif command == "bank":
+            print(f"{bank(book)} dollars in the bank right now.")
+            
+            
         else:
             print('Invalid command. Enter "help" for help')
+            
 
 if __name__ == "__main__":
     main()
