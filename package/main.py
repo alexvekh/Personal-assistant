@@ -30,7 +30,7 @@ commands = [
     'change-birthday', 'delete-birthday', 'birthdays', 'add-email', 'email',
     'change-email', 'delete-email', 'add-address', 'change-address',
     'show-address', 'delete-address', 'add-note', 'edit-note', 'delete-note',
-    'show-notes'
+    'show-notes', 'deposit', 'withdraw', 'money', 'bank'
 ]
 
 

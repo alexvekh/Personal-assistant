@@ -696,7 +696,9 @@ def show_commands():
             "add-birthday [name] [birthday]": "Add a birthday for a contact.",
             "show-birthday [name]": "Show the birthday of a specific contact.",
             "change-birthday [name] [new birthday]": "Change birthday for your contact",
-            "delete-birthday [name]": "Delete a contact's birthday."
+            "delete-birthday [name]": "Delete a contact's birthday.",
+            "birthdays": "Displays all the birthdays for upcoming week",
+            "birtdays [number of days]": "Displays all upcoming birthdays within the specified number of days."
         },
         "Email Management": {
             "add-email [name] [email]": "Add an email to a contact.",
