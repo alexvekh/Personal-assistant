@@ -33,10 +33,6 @@ commands = [
     'show-notes'
 ]
 
-
-
-
-
 def main():
     try:
         result = load_from_json()  
