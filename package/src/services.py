@@ -252,15 +252,7 @@ def show_all(book):
 
 @input_error
 def show_table(book):
-# ============= was table format ==============================================
-#     res = []
-#     res.append("{:^20}".format("CONTACTS"))
-#     res.append("{:^20}".format("-" * 10))
-#     for name, record in book.items():
-#         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
-#     res.append("{:^20}".format("=" * 20))
-# =============================================================================
-    res = ["{:^60}".format("CONTACTS"), "{:-^146}".format("")]
+    res = ["{:^125}".format("CONTACTS"), "{:-^146}".format("")]
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
         phones = ", ".join(phone.value for phone in record.phones) or "No Phone"

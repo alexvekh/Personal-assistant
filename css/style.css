@@ -5,90 +5,99 @@
   box-sizing: border-box;
 }
 
+body {
+  background-image: url(fone.jpg);
+}
+
 /* Шапка */
 header {
   background-image: url("banner.jpg");
   background-size: cover;
-  height: 200px;
-  width: 1200px;
+  height: 300px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: auto;
 }
 
-.text-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  color: white;
-  text-align: center;
-  background-color: rgba(128, 128, 128, 0.069);
-  padding-bottom: 200px;
+.logo {
+  padding: 0 300px;
+  width: 300px;
+  height: 300px;
 }
 
-.logo {
-  margin-left: 100px;
-}
 
 .logo img {
-  width: 150px;
+  width: 350px;
 }
-
-.on_image {
-    margin-bottom: 10px;
-    font-size: 52px;
-}
-
-.p_on_image {
-  margin-bottom: 20px;
-  font-size:30px;
-}
-
-.image-container {
-  text-align: center;
-}
-
-.image-container img {
-  display: flex;
-  margin: auto;
-  max-width: 100%;
-}
+/* img {
+  transform: scale(2);
+} */
 
 .counter {
-  margin-right: 100px;
-  color: #040159;
+  display: flex;
+  margin-right: 500px;
+  color: white;
 }
-
 .counter h1 {
   margin-bottom: 10px;
   font-size: 36px;
 }
-
-
 
 #amount {
   font-size: 44px;
   font-weight: bold;
 }
 
+
+
+
+.text-container {
+  top: 50%;
+  left: 50%;
+  color: rgb(210, 178, 0);
+  text-align: center;
+  background-color: rgba(128, 128, 128, 0.069);
+  padding: 50px 400px;
+}
+
+.text-container h1{
+  margin-bottom: 10px;
+  font-size: 60px;
+}
+
+.text-container p {
+  margin-bottom: 20px;
+  font-size:30px;
+  color: #040159;
+  padding: 0 50px;
+}
+
+.image-container {
+  text-align: center;
+}
+
+
+
+
+
+
 /* Розділ "Приєднуйтесь" */
 .join {
-  background-color: #f5f5f5;
-  padding: 40px 20px;
+  background-color: #faf7f765;
+  padding: 20px 20px;
   margin-top: 20px;
   text-align: center;
 }
 
 .join h2 {
-  font-size: 24px;
+  font-size: 34px;
   margin-bottom: 10px;
 }
 
 .join p {
-  font-size: 16px;
+  font-size: 24px;
   margin-bottom: 20px;
 }
 
@@ -133,7 +142,7 @@ header {
 }
 
 footer {
-  background-color: #333;
+  background-color: #33333327;
   color: #fff;
   text-align: center;
   padding: 10px;
