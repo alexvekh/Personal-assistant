@@ -6,6 +6,7 @@ file = "package/src/data.json"
 
 
 def convert_to_json(book, notes):
+    """Converts given data to serializable format"""
     data = {"records": [], "notes": []}
     for record in book.data.values():
         data["records"].append(
@@ -19,7 +20,7 @@ def convert_to_json(book, notes):
                 ),
                 "emails": [email.value for email in record.emails],
                 "addresses": [str(address) for address in record.addresses],
-                "money": record.money
+                "money": record.money,
             }
         )
     for note in notes:
@@ -34,12 +35,14 @@ def convert_to_json(book, notes):
 
 
 def save_to_json(book, notes):
+    """Saves data to .json file"""
     with open(file, "w", encoding="utf-8") as fh:
         json.dump(convert_to_json(book, notes), fh)
     print("Don't worry, all data saved to file.")
 
 
 def load_from_json():
+    """Loads data from .json file"""
     with open(file, "r") as fh:
         data = json.load(fh)
         book = AddressBook()
@@ -61,7 +64,7 @@ def load_from_json():
             ]
 
             birthday = Birthday(contact["birthday"]) if contact["birthday"] else None
-            
+
             money = int(contact["money"])
 
             record = Record(name)

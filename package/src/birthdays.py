@@ -5,6 +5,7 @@ import os
 
 
 def get_birthdays_per_week(users):  # get users with next 7 days birthdays
+    """Takes a number of days you want to look and returns all people who`s birthday is in <this number> or less days."""
     birthdays_per_week = defaultdict(list)  # For save result
 
     today = datetime.today().date()
