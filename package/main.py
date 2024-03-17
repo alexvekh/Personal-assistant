@@ -65,14 +65,12 @@ def main():
             print(show_commands())
 # All
         elif command == "all":
-            print(show_all(book))#
+            print(show_all(book))
         elif command == "delete":
             print(delete(args, book))
-        # elif command == "find":      # відкладена
-        #     print(find(args, book))
 
-# Find  c
-        elif command == "find-contactj":
+# Find
+        elif command == "find-contact":
             print(find(args, book))
         
 
