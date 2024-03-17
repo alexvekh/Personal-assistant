@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 from collections import defaultdict
 import os
-
+from termcolor import colored
 
 def get_birthdays_per_week(users):  # get users with next 7 days birthdays
     """Takes a number of days you want to look and returns all people who`s birthday is in <this number> or less days."""
@@ -31,7 +31,7 @@ def get_birthdays_per_week(users):  # get users with next 7 days birthdays
         print("No users with birthday this week")
 
     else:
-        print("This week bithdays have users:")
+        print(colored("🎉 They have birthdays this week:", 'cyan', attrs=['bold']))
         sorted_days = sorted(birthdays_per_week.keys())
         for day in sorted_days:
             # print(day + ':  ' + ', '.join(birthdays_per_week[day]))  # simple
@@ -94,7 +94,8 @@ def get_birthdays_by_days(users, string_days):
             phone = ph.value
             phones.append(phone)
 
-        print(f"{day}.{month} {name} will get {years}. Phones: {','.join(phones)}")
+        birthday_message = f"🎉 On {day}.{month}, {name} will turn {years} years old. 📞 Phones: {', '.join(phones)}"
+        print(colored(birthday_message, 'yellow', attrs=['bold']))
 
 
 # Function to get birthdays by month
