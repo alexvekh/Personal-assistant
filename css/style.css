@@ -1,0 +1,152 @@
+/* Скидання стилів */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url(fone.jpg);
+}
+
+/* Шапка */
+header {
+  background-image: url("banner.jpg");
+  background-size: cover;
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.logo {
+  padding: 0 300px;
+  width: 300px;
+  height: 300px;
+}
+
+
+.logo img {
+  width: 350px;
+}
+/* img {
+  transform: scale(2);
+} */
+
+.counter {
+  display: flex;
+  margin-right: 500px;
+  color: white;
+}
+.counter h1 {
+  margin-bottom: 10px;
+  font-size: 36px;
+}
+
+#amount {
+  font-size: 44px;
+  font-weight: bold;
+}
+
+
+
+
+.text-container {
+  top: 50%;
+  left: 50%;
+  color: rgb(210, 178, 0);
+  text-align: center;
+  background-color: rgba(128, 128, 128, 0.069);
+  padding: 50px 400px;
+}
+
+.text-container h1{
+  margin-bottom: 10px;
+  font-size: 60px;
+}
+
+.text-container p {
+  margin-bottom: 20px;
+  font-size:30px;
+  color: #040159;
+  padding: 0 50px;
+}
+
+.image-container {
+  text-align: center;
+}
+
+
+
+
+
+
+/* Розділ "Приєднуйтесь" */
+.join {
+  background-color: #faf7f765;
+  padding: 20px 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.join h2 {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
+
+.join p {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.join a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0073b7;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+/* Розділ "Волонтери" */
+.volunteers {
+  padding: 40px 20px;
+}
+
+.volunteers h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#volunteers-list {
+  list-style: none;
+  padding: 0;
+}
+
+#volunteers-list li {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+#volunteers-list li h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#volunteers-list li p {
+  font-size: 16px;
+}
+
+footer {
+  background-color: #33333327;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
