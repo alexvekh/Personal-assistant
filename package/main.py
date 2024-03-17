@@ -65,6 +65,8 @@ def main():
             print(show_commands())
 # All
         elif command == "all":
+            print(show_table(book))
+        elif command == "contacts":
             print(show_all(book))
         elif command == "delete":
             print(delete(args, book))
