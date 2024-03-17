@@ -27,34 +27,12 @@ class FirstWordCompleter(Completer):
 
 
 commands = [
-    "close",
-    "exit",
-    "good bye",
-    "hello",
-    "help",
-    "all",
-    "delete",
-    "find-contact",
-    "add",
-    "phone",
-    "change",
-    "add-birthday",
-    "show-birthday",
-    "change-birthday",
-    "delete-birthday",
-    "birthdays",
-    "add-email",
-    "email",
-    "change-email",
-    "delete-email",
-    "add-address",
-    "change-address",
-    "show-address",
-    "delete-address",
-    "add-note",
-    "edit-note",
-    "delete-note",
-    "show-notes",
+    'close', 'exit', 'good bye', 'hello', 'help', 'all', 'delete',
+    'find-contact', 'add', 'phone', 'change', 'add-birthday', 'show-birthday',
+    'change-birthday', 'delete-birthday', 'birthdays', 'add-email', 'email',
+    'change-email', 'delete-email', 'add-address', 'change-address',
+    'show-address', 'delete-address', 'add-note', 'edit-note', 'delete-note',
+    'show-notes', 'deposit', 'withdraw', 'money', 'bank'
 ]
 
 
@@ -99,7 +77,9 @@ def main():
         elif command == "delete":
             print(delete(args, book))
 
-        # Find
+
+# Find  c
+
         elif command == "find-contact":
             print(find(args, book))
 

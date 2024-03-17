@@ -185,7 +185,9 @@ def find(args, book):
         )
         money = book[name].money
 
-        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\nMoney: {money} dollars"
+        
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n💰 Money: {money} dollars"
+
         return contact_info
     else:
         return colored(f"\U000026D4 Contact {name}  not found.", "red", attrs=["bold"])
@@ -694,6 +696,9 @@ def show_commands():
             "show-birthday [name]": "Show the birthday of a specific contact.",
             "change-birthday [name] [new birthday]": "Change birthday for your contact",
             "delete-birthday [name]": "Delete a contact's birthday.",
+            "birthdays": "Displays all the birthdays for upcoming week",
+            "birtdays [number of days]": "Displays all upcoming birthdays within the specified number of days."
+
         },
         "Email Management": {
             "add-email [name] [email]": "Add an email to a contact.",
