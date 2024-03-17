@@ -112,14 +112,6 @@ def get_phones(record):  # Service for get phones from record
 @input_error
 def show_all(book):
     """Shows all information about every contact"""
-    # ============= was table format ==============================================
-    #     res = []
-    #     res.append("{:^20}".format("CONTACTS"))
-    #     res.append("{:^20}".format("-" * 10))
-    #     for name, record in book.items():
-    #         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
-    #     res.append("{:^20}".format("=" * 20))
-    # =============================================================================
     res = ["{:^60}".format("CONTACTS"), "{:-^60}".format("")]
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
@@ -147,15 +139,8 @@ def show_all(book):
 @input_error
 def show_table(book):
     """Shows the address book in a table format"""
-    # ============= was table format ==============================================
-    #     res = []
-    #     res.append("{:^20}".format("CONTACTS"))
-    #     res.append("{:^20}".format("-" * 10))
-    #     for name, record in book.items():
-    #         res.append("{:<14} {:<14}".format(name + ":", get_phones(record)))
-    #     res.append("{:^20}".format("=" * 20))
-    # =============================================================================
-    res = ["{:^60}".format("CONTACTS"), "{:-^60}".format("")]
+    res = ["{:^125}".format("CONTACTS"), "{:-^146}".format("")]
+
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
         phones = ", ".join(phone.value for phone in record.phones) or "No Phone"
@@ -172,10 +157,9 @@ def show_table(book):
             or "No Address"
         )
         money = book[name].money
-
-        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n💰 Money: {money} dollars"
+        contact_info = "👤 {:<12} 📞 {:<20} 📧 {:<27} 🎂 {:<15} 🏠 {:<45} 💰 {:<6}".format(name, phones, emails, birthday, addresses, money)
         res.append(contact_info)
-        res.append("{:-^60}".format(""))  # Додав розділювач між контактами
+        res.append("{:-^146}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
 
 
@@ -768,3 +752,4 @@ def delete(args, book):
         elif field == "notes":
             res = record.remove_notes()
             return res
+

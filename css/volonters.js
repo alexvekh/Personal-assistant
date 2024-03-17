@@ -2,7 +2,7 @@
 const volunteerList = document.getElementById("volunteers-list");
 
 // Assuming "data.json" is in the same folder as your HTML
-fetch("/../package/src/data.json") // Adjust the path if necessary
+fetch("./../package/src/data.json") // Adjust the path if necessary
   .then((response) => response.json())
   .then((data) => {
     data.records.forEach((volunteer) => {
