@@ -48,6 +48,7 @@ def main():
 
 
     print("Welcome to the assistant bot!")
+    national_symbol()
     session = PromptSession(completer=FirstWordCompleter(commands))
     # Після визначення функції main() і перед while True:
     while True:
@@ -142,3 +143,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

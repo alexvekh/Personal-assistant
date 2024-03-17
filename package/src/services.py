@@ -761,6 +761,29 @@ def delete(args, book):
             res = record.remove_notes()
             return res
 
-
+def national_symbol():
+    """Glory to Ukraine"""
+    print('             $$             ')
+    print('            $$$$            ')
+    print('$$$         $$$$         $$$')
+    print('$$$$$       $$$$       $$$$$')
+    print('$$$ $$      $$$$      $$$$$$')
+    print('$$$  $$     $$$$     $$  $$$')
+    print('$$$   $$     $$     $$   $$$')
+    print('$$$   $$     $$     $$   $$$')
+    print('$$$   $$     $$     $$   $$$')
+    print('$$$   $$    $$$$    $$   $$$')
+    print('$$$   $$    $$$$    $$   $$$')
+    print('$$$  $$    $$$$$$    $$  $$$')
+    print('$$$$$$     $$  $$     $$$$$$')
+    print('$$$ $$$   $$    $$   $$$ $$$')
+    print('$$$  $$$$$$$    $$$$$$$  $$$')
+    print('$$$     $$ $$$$$$ $$     $$$')
+    print('$$$     $$   $$   $$     $$$')
+    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    print('        $$$  $$  $$$        ')
+    print('         $$$ $$ $$$         ')
+    print('          $$$$$$$$          ')
+    print('            $$$$            ')
 
 
