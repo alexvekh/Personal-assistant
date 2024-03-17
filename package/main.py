@@ -49,7 +49,7 @@ def main():
         book = AddressBook()
         notes = []
 
-    print("Welcome to the assistant bot!")
+    print(colored("🤖 Welcome to the assistant bot!", 'black', 'on_light_yellow', attrs=['bold']))
     national_symbol()
     session = PromptSession(completer=FirstWordCompleter(commands))
     # Після визначення функції main() і перед while True:

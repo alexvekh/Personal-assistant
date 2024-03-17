@@ -139,7 +139,7 @@ def show_all(book):
 @input_error
 def show_table(book):
     """Shows the address book in a table format"""
-    res = ["{:^125}".format("CONTACTS"), "{:-^146}".format("")]
+    res = ["{:^125}".format("CONTACTS"), "{:-^142}".format("")]
 
     for name, record in book.items():
         emails = ", ".join(email.value for email in record.emails) or "No Email"
@@ -157,9 +157,9 @@ def show_table(book):
             or "No Address"
         )
         money = book[name].money
-        contact_info = "👤 {:<12} 📞 {:<20} 📧 {:<27} 🎂 {:<15} 🏠 {:<45} 💰 {:<6}".format(name, phones, emails, birthday, addresses, money)
+        contact_info = "👤 {:<12} 📞 {:<16} 📧 {:<27} 🎂 {:<15} 🏠 {:<45} 💰 {:<6}".format(name, phones, emails, birthday, addresses, money)
         res.append(contact_info)
-        res.append("{:-^146}".format(""))  # Додав розділювач між контактами
+        res.append("{:-^142}".format(""))  # Додав розділювач між контактами
     return "\n".join(res)
 
 
@@ -761,27 +761,27 @@ def delete(args, book):
 
 def national_symbol():
     """Glory to Ukraine"""
-    print('             $$             ')
-    print('            $$$$            ')
-    print('$$$         $$$$         $$$')
-    print('$$$$$       $$$$       $$$$$')
-    print('$$$ $$      $$$$      $$$$$$')
-    print('$$$  $$     $$$$     $$  $$$')
-    print('$$$   $$     $$     $$   $$$')
-    print('$$$   $$     $$     $$   $$$')
-    print('$$$   $$     $$     $$   $$$')
-    print('$$$   $$    $$$$    $$   $$$')
-    print('$$$   $$    $$$$    $$   $$$')
-    print('$$$  $$    $$$$$$    $$  $$$')
-    print('$$$$$$     $$  $$     $$$$$$')
-    print('$$$ $$$   $$    $$   $$$ $$$')
-    print('$$$  $$$$$$$    $$$$$$$  $$$')
-    print('$$$     $$ $$$$$$ $$     $$$')
-    print('$$$     $$   $$   $$     $$$')
-    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-    print('        $$$  $$  $$$        ')
-    print('         $$$ $$ $$$         ')
-    print('          $$$$$$$$          ')
-    print('            $$$$            ')
+    print('                                                        $$             ')
+    print('                                                       $$$$           ')
+    print('                                           $$$         $$$$         $$$')
+    print('                                           $$$$$       $$$$       $$$$$')
+    print('                                           $$$ $$      $$$$      $$$$$$')
+    print('                                           $$$  $$     $$$$     $$  $$$')
+    print('                                           $$$   $$     $$     $$   $$$')
+    print('                                           $$$   $$     $$     $$   $$$')
+    print('                                           $$$   $$     $$     $$   $$$')
+    print('                                           $$$   $$    $$$$    $$   $$$')
+    print('                                           $$$   $$    $$$$    $$   $$$')
+    print('                                           $$$  $$    $$$$$$    $$  $$$')
+    print('                                           $$$$$$     $$  $$     $$$$$$')
+    print('                                           $$$ $$$   $$    $$   $$$ $$$')
+    print('                                           $$$  $$$$$$$    $$$$$$$  $$$')
+    print('                                           $$$     $$ $$$$$$ $$     $$$')
+    print('                                           $$$     $$   $$   $$     $$$')
+    print('                                           $$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    print('                                                   $$$  $$  $$$        ')
+    print('                                                    $$$ $$ $$$         ')
+    print('                                                     $$$$$$$$          ')
+    print('                                                       $$$$            ')
 
 
