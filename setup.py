@@ -9,6 +9,6 @@ setup(
     author_email="vlad_bb@icloud.com, alexvekh@yahoo.com, aliesia.soloviova@gmail.com, megaprokop3578@gmail.com, m.v.matviiuk@gmail.com, makspryima@gmail.com",
     license="MIT",
     packages=find_namespace_packages(),
-    install_requires=["termcolor, prompt_toolkit, setuptools"],
+    install_requires=["termcolor", "prompt_toolkit", "setuptools"],
     entry_points={"console_scripts": ["terminal = package.main:main"]},
 )

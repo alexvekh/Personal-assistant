@@ -18,4 +18,7 @@ fetch("./../package/src/data.json") // Adjust the path if necessary
       volunteerList.appendChild(volunteerItem);
     });
   });
+<<<<<<< HEAD
 exit;
+=======
+>>>>>>> site
