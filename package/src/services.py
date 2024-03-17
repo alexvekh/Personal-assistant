@@ -269,7 +269,7 @@ def find(args, book):
         addresses = "; ".join(f"{address.street}, {address.house_number}, {address.city}, {address.postal_code if address.postal_code else ''}, {address.country if address.country else ''}" for address in book[name].addresses) or "No Address"
         money = book[name].money
         
-        contact_info = f"Name: {name}\nPhone: {phones}\nEmail: {emails}\nBirthday: {birthday}\nAddress: {addresses}\nMoney: {money} dollars"
+        contact_info = f"👤 Name: {name}\n📞 Phone: {phones}\n📧 Email: {emails}\n🎂 Birthday: {birthday}\n🏠 Address: {addresses}\n💰 Money: {money} dollars"
         return contact_info
     else:
         return colored(f"\U000026D4 Contact {name}  not found.", 'red', attrs=['bold'])
