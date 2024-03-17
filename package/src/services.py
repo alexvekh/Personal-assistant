@@ -726,6 +726,7 @@ def show_commands():
         print(f"\n{group_name}:")
         for command, description in commands.items():
             print(f"  {command:40} - {description}")
+    return ''
 
 @input_error
 def delete(args, book):

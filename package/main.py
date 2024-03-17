@@ -76,8 +76,8 @@ def main():
         # elif command == "find":      # відкладена
         #     print(find(args, book))
 
-# Find  
-        elif command == "find-contact":
+# Find  c
+        elif command == "find-contactj":
             print(find(args, book))
         
 
