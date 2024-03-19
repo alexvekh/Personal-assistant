@@ -51,8 +51,6 @@ header {
 }
 
 
-
-
 .text-container {
   top: 50%;
   left: 50%;
@@ -77,10 +75,6 @@ header {
 .image-container {
   text-align: center;
 }
-
-
-
-
 
 
 /* Розділ "Приєднуйтесь" */
@@ -149,4 +143,23 @@ footer {
   position: fixed;
   width: 100%;
   bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+a {
+  text-decoration: none;
+  color: rgb(115, 197, 255);
+}
+a:hover {
+  color: white
+}
+
+link:visited {
+  color: rgba(0, 98, 255, 0.694)  /* Optional style for visited links */
+}
+
+
 }

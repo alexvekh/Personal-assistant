@@ -22,31 +22,30 @@ pip install -r requirements.txt
 Run the Program: Execute the main Python script (e.g., main.py) using the command prompt or terminal:
 
 ```bash
-pip install -e . 
+pip install terminal
 ```
 
-
 ## Usage
+
 Run the Program: Execute the main Python script (e.g., main.py) using the command prompt or terminal:
 
 ```Bash
-termminal
+terminal
 ```
 
-
-## Interact with the Assistant: 
+## Interact with the Assistant:
 
 You'll be greeted by "Welcome to the assistant bot!". Type a command and press Enter. Here are some examples:
 
-* `add John 1234567890` : Create a new contact named "John Doe" with phone number "123-456-7890".
-* `phone John` : Display the phone number of "John Doe".
-* `change-birthday` : John Doe 2000-01-01: Update the birthday of "John Doe" to "2000-01-01".
-* `add-email John johndoe@example.com` : Add an email address "johndoe@example.com" to "John Doe".
-* `show-address Jane` : View the address of "Jane Smith".
-* `add-note` : This is a reminder for John Doe.: Add a note associated with "John Doe".
-* `show-notes` : Display all notes.
-* `help` : Display a list of available commands.
-* `exit` : Terminate the program.
+- `add John 1234567890` : Create a new contact named "John Doe" with phone number "123-456-7890".
+- `phone John` : Display the phone number of "John Doe".
+- `change-birthday` : John Doe 2000-01-01: Update the birthday of "John Doe" to "2000-01-01".
+- `add-email John johndoe@example.com` : Add an email address "johndoe@example.com" to "John Doe".
+- `show-address Jane` : View the address of "Jane Smith".
+- `add-note` : This is a reminder for John Doe.: Add a note associated with "John Doe".
+- `show-notes` : Display all notes.
+- `help` : Display a list of available commands.
+- `exit` : Terminate the program.
 
 ## Explanation of Commands
 
